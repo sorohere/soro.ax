@@ -1,11 +1,11 @@
-//generateBreadcrumbs
-const currentPage = window.location.pathname;
+const baseURL = '/soro.ax'; // Add base URL for GitHub Pages
+
 const pageNames = {
-  "/": "home",
-  "/posts/post.html": "posts",
-  "/about/about.html": "about",
-  "/posts/blog01.html": "wlcm",
-  "/posts/blog02.html": "maths&ml",
+  [`${baseURL}/`]: "home",
+  [`${baseURL}/posts/post.html`]: "posts",
+  [`${baseURL}/about/about.html`]: "about",
+  [`${baseURL}/posts/blog01.html`]: "wlcm",
+  [`${baseURL}/posts/blog02.html`]: "maths&ml",
 };
 
 function generateBreadcrumbs() {
@@ -16,18 +16,20 @@ function generateBreadcrumbs() {
     return;
   }
 
+  const currentPage = window.location.pathname;
   const pathSegments = currentPage.split("/").filter(Boolean);
-  let breadcrumbPath = '<a href="/soro.ax">home</a>';
+  let breadcrumbPath = `<a href="${baseURL}/">home</a>`;
 
   pathSegments.reduce((acc, segment, index) => {
     const path = `/${pathSegments.slice(0, index + 1).join("/")}`;
-    const pageName = pageNames[path];
+    const fullPath = path === '/' ? baseURL + path : baseURL + path;
+    const pageName = pageNames[fullPath];
 
     if (pageName) {
-      if (path.startsWith("/posts/blog")) {
-        breadcrumbPath += '.<a href="/posts/post.html">posts</a>';
+      if (path.includes("/posts/blog")) {
+        breadcrumbPath += `.<a href="${baseURL}/posts/post.html">posts</a>`;
       }
-      breadcrumbPath += `.<a href="${path}">${pageName}</a>`;
+      breadcrumbPath += `.<a href="${fullPath}">${pageName}</a>`;
     }
     return path;
   }, "");
