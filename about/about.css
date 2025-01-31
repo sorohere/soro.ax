@@ -78,11 +78,6 @@ ul li::before {
 
 .breadcrumbs {
   color: #7460E0;
-  display: block;
-  margin: 1em 0;
-  font-size: 0.9em;
-  visibility: visible !important;
-  opacity: 1 !important;
 }
 
 .breadcrumbs a {
