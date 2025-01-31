@@ -17,7 +17,7 @@ function generateBreadcrumbs() {
   }
 
   const pathSegments = currentPage.split("/").filter(Boolean);
-  let breadcrumbPath = '<a href="/">home</a>';
+  let breadcrumbPath = '<a href="/soro.ax">home</a>';
 
   pathSegments.reduce((acc, segment, index) => {
     const path = `/${pathSegments.slice(0, index + 1).join("/")}`;
