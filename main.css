@@ -453,6 +453,10 @@ h1 span {
     padding-left: 5%;
     padding-right: 5%;
   }
+
+  .desktop-1 {
+    width: 500px;
+  }
 }
 
 /* Width <= 450px */

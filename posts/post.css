@@ -1,4 +1,3 @@
-
 @font-face {
   font-family: 'Space Mono';
   font-style: normal;
@@ -154,6 +153,9 @@ body {
   margin-right: 0.4em;
 }
 
+.image-caption {
+  color: #888;
+}
 
 /* Every 50px from 300px to 1400px */
 
