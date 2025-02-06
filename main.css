@@ -448,14 +448,14 @@ h1 span {
 /* Small Phones */
 @media screen and (max-width: 480px) {
   body {
-    padding: 0.8em;
+    padding: 0.72em;
     font-size: 13px;
-    padding-left: 5%;
-    padding-right: 5%;
+    padding-left: 4.5%;
+    padding-right: 4.5%;
   }
 
   .desktop-1 {
-    width: 500px;
+    width: 465px;
   }
 }
 
