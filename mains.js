@@ -8,6 +8,7 @@ const pageNames = {
   '/about/about.html': "about",
   '/posts/blog01.html': "wlcm",
   '/posts/blog02.html': "maths&ml",
+  '/posts/blog03.html': "vad",
 };
 
 function generateBreadcrumbs() {
