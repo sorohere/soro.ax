@@ -26,7 +26,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
                         {...props}
                     />
                 ),
-                p: ({ node, ...props }) => <p className="text-muted-foreground leading-relaxed mb-6" {...props} />,
+                p: ({ node, ...props }) => <p className="text-muted-foreground leading-relaxed mb-6 text-justify" {...props} />,
                 ul: ({ node, ...props }) => <ul className="list-disc list-inside mb-6 text-muted-foreground" {...props} />,
                 ol: ({ node, ...props }) => <ol className="list-decimal list-inside mb-6 text-muted-foreground" {...props} />,
                 li: ({ node, ...props }) => <li className="mb-2" {...props} />,
