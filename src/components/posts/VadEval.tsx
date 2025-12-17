@@ -86,10 +86,6 @@ export function VadEval() {
                 To make things even more interesting, I added uneven noise to the audio samples (because who doesn’t love a challenge?). The goal was to see how well these VAD systems could handle real world noise levels.
             </p>
 
-            <div className="my-8">
-                <Image src="/images/bg03-03.png" alt="SNR Experiment" width={800} height={400} className="rounded-lg w-full" />
-            </div>
-
             <p>
                 Spoiler alert: after a certain point, the systems got better, but there’s only so much noise they can handle before they start to crack, kind of like me trying to focus on a conversation while in sleepy af.
             </p>

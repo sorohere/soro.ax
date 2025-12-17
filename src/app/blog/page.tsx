@@ -1,14 +1,9 @@
-"use client";
-
 import Link from "next/link";
-
-const posts = [
-    { date: "2025-02-10", title: "vad-eval", slug: "vad-eval" },
-    { date: "2024-08-21", title: "maths&ml", slug: "maths-ml" },
-    { date: "2025-01-26", title: "me?", slug: "me" },
-];
+import { getAllPosts } from "@/lib/posts";
 
 export default function BlogPage() {
+    const posts = getAllPosts();
+
     return (
         <div className="max-w-3xl mx-auto px-6 pb-20">
             <div className="space-y-4 font-mono">
@@ -21,7 +16,7 @@ export default function BlogPage() {
                             href={`/blog/${post.slug}`}
                             className="text-accent hover:text-white transition-colors"
                         >
-                            {post.title}
+                            {post.slug}
                         </Link>
                     </div>
                 ))}

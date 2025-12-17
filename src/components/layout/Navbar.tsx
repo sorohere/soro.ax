@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
 const navItems = [
-    { name: "home", path: "/" },
+    { name: "home", path: "/home" },
     { name: "post", path: "/blog" },
     { name: "about", path: "/about" },
     { name: "me", path: "/me" },
@@ -16,7 +16,7 @@ export function Navbar() {
     const pathname = usePathname();
 
     // Breadcrumb logic
-    const isHome = pathname === "/";
+    const isHome = pathname === "/home";
     const isBlog = pathname.startsWith("/blog");
     const isAbout = pathname === "/about";
     const isMe = pathname === "/me";
@@ -24,7 +24,7 @@ export function Navbar() {
     return (
         <header className="w-full max-w-3xl mx-auto px-6 pt-20 pb-12">
             <div className="flex flex-col gap-2 items-start">
-                <Link href="/" className="text-2xl font-bold text-white">
+                <Link href="/home" className="text-2xl font-bold text-white">
                     soro
                 </Link>
 
@@ -43,7 +43,7 @@ export function Navbar() {
                     ) : (
                         // Breadcrumbs for subpages
                         <div className="flex items-center text-accent">
-                            <Link href="/" className="hover:text-white transition-colors">home</Link>
+                            <Link href="/home" className="hover:text-white transition-colors">home</Link>
                             <span className="text-muted-foreground">.</span>
                             {isBlog && (
                                 <Link href="/blog" className="text-accent hover:text-white transition-colors">

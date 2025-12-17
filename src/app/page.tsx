@@ -1,9 +1,5 @@
-import { Hero } from "@/components/sections/Hero";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return (
-    <div className="flex flex-col gap-0 pb-0">
-      <Hero />
-    </div>
-  );
+export default function Page() {
+  redirect("/home");
 }
