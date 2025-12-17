@@ -158,30 +158,40 @@ export default function AdminPage() {
 
     if (!isAuthenticated) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-[60vh] px-6">
-                <form onSubmit={handleLogin} className="flex flex-col gap-4 w-full max-w-sm">
-                    <h1 className="text-2xl font-bold text-center mb-4">Admin Access</h1>
-                    <input
-                        type="text"
-                        placeholder="Username"
-                        value={usernameInput}
-                        onChange={(e) => setUsernameInput(e.target.value)}
-                        className="bg-black border border-white/10 rounded p-2 text-white focus:border-accent outline-none"
-                    />
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={passwordInput}
-                        onChange={(e) => setPasswordInput(e.target.value)}
-                        className="bg-black border border-white/10 rounded p-2 text-white focus:border-accent outline-none"
-                    />
-                    <button
-                        type="submit"
-                        className="bg-accent text-white py-2 px-4 rounded hover:bg-accent/80 transition-colors font-bold"
-                    >
-                        Login
-                    </button>
-                </form>
+            <div className="flex flex-col items-center justify-center min-h-[80vh] px-6 font-mono">
+                <div className="w-full max-w-md bg-black border border-white/10 rounded-xl p-8 shadow-2xl">
+                    <h1 className="text-3xl font-bold text-center mb-8 text-white">
+                        <span className="text-accent">soro</span> Access
+                    </h1>
+                    <form onSubmit={handleLogin} className="flex flex-col gap-6">
+                        <div>
+                            <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Username</label>
+                            <input
+                                type="text"
+                                placeholder="Enter username..."
+                                value={usernameInput}
+                                onChange={(e) => setUsernameInput(e.target.value)}
+                                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-accent focus:bg-accent/5 outline-none transition-all placeholder:text-white/20"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Password</label>
+                            <input
+                                type="password"
+                                placeholder="Enter password..."
+                                value={passwordInput}
+                                onChange={(e) => setPasswordInput(e.target.value)}
+                                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-accent focus:bg-accent/5 outline-none transition-all placeholder:text-white/20"
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            className="w-full bg-accent text-white py-3 px-4 rounded-lg font-bold hover:bg-accent/80 transition-all shadow-[0_0_20px_rgba(124,58,237,0.2)] hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] mt-2"
+                        >
+                            Login
+                        </button>
+                    </form>
+                </div>
             </div>
         );
     }
