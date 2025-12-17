@@ -13,12 +13,8 @@ Let me take you back to the moment my brain did a full 180. It was the first tim
 
 At its core, a perceptron is just a simple mathematical function. It takes inputs, weighs them, sums them up, and spits out an output. But when you stack a bunch of them together, something magical happens. They start to mimic the way our brains work kind of. It’s like building a digital brain, one tiny neuron at a time.
 
-![Perceptron Diagram | half](/images/bg01-01.png)
-(source: [ultralytics/AbiramiVina](https://www.ultralytics.com/blog/perceptrons-and-neural-networks-basic-principles-of-computer-vision))
-simple perceptron: inputs, weights, bias, and activation function.
-
-![Gradient Descent Diagram | half](/images/bg01-02.png)
-Gradient descent in action: minimizing the cost function step by step.
+![Perceptron Diagram: simple perceptron (source: ultralytics/AbiramiVina) | half](/images/bg01-01.png)
+![Gradient Descent Diagram: minimizing the cost function step by step | half](/images/bg01-02.png)
 
 But the real mind blown was gradient descent. Imagine you’re standing on a mountain, blindfolded, and your goal is to find the lowest point. You can’t see anything, so you take small steps, feeling the slope beneath your feet. If the ground slopes downward, you keep going. If it slopes upward, you backtrack. That’s gradient descent in a nutshell. It’s the algorithm that helps models “learn” by minimizing errors, one step at a time.
 

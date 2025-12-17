@@ -19,11 +19,8 @@ VAD is like the bouncer at a club, deciding who gets in (speech) and who stays o
 
 In my research, I looked at two main ways to evaluate VAD systems: traditional metrics and modern metrics. Think of it like judging a pizza: traditional metrics are like checking if the pizza has the right amount of cheese and toppings, while modern metrics are like tasting it to see if it’s actually delicious.
 
-![Perceptron Diagram | half](/images/bg03-01.png)
-measuring the cheese and toppings, a traditional way.
-
-![Gradient Descent Diagram | half](/images/bg03-02.png)
-consideration of boundaries of speech. (source: [newscientist.com](https://www.newscientist.com/))
+![Perceptron Diagram: measuring the cheese and toppings, a traditional way. | half](/images/bg03-01.png)
+![Gradient Descent Diagram: consideration of boundaries of speech. (source: newscientist.com) | half](/images/bg03-02.png)
 
 **Traditional Metrics: The Cheese and Toppings**
 
@@ -65,7 +62,7 @@ After running the tests, a few models stood out:
 
 To make things even more interesting, I added uneven noise to the audio samples (because who doesn’t love a challenge?). The goal was to see how well these VAD systems could handle real world noise levels.
 
-![SNR Experiment](/images/bg03-03.png)
+
 
 Spoiler alert: after a certain point, the systems got better, but there’s only so much noise they can handle before they start to crack, kind of like me trying to focus on a conversation while in sleepy af.
 
