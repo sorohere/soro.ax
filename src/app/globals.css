@@ -23,3 +23,12 @@ body {
   font-family: var(--font-mono);
   overflow-x: hidden;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
