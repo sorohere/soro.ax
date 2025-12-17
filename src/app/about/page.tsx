@@ -2,13 +2,13 @@ export default function AboutPage() {
     return (
         <div className="max-w-3xl mx-auto px-6 pb-4">
             <div className="prose prose-invert max-w-none font-mono">
-                <p className="text-base text-muted-foreground leading-relaxed">
+                <p className="text-base text-muted-foreground leading-relaxed text-justify">
                     안녕! i&apos;m soro <br />just a regular CS student figuring out life, one debug
                     at a time. part-time movie buff and occasional existential crisis haver.
                     i&apos;m out here trying to make my neurons and neural networks fire in sync.
                 </p>
 
-                <div className="text-base text-muted-foreground leading-relaxed mt-6">
+                <div className="text-base text-muted-foreground leading-relaxed mt-6 text-justify">
                     currently fine-tuning my skills in:
                     <div>{'->'}<a href="https://docs.python.org/3/" target="_blank" className="text-accent hover:text-white no-underline"> python</a> – the snek that does math</div>
                     <div>{'->'}<a href="https://www.learncpp.com/" target="_blank" className="text-accent hover:text-white no-underline"> c/c++</a> – for when Python needs speed</div>
@@ -18,11 +18,11 @@ export default function AboutPage() {
 
                 </div>
 
-                <p className="text-base text-muted-foreground leading-relaxed mt-6 italic">
+                <p className="text-base text-muted-foreground leading-relaxed mt-6 italic text-justify">
                     last updated: whenever my coffee cup is empty.
                 </p>
 
-                <p className="text-base text-muted-foreground leading-relaxed mt-6">
+                <p className="text-base text-muted-foreground leading-relaxed mt-6 text-justify">
                     when not coding: lost in movies that make me question reality, listening
                     to music that fuels my soul, and and enjoying the <a href="https://www.youtube.com/watch?v=k7X7sZzSXYs" target="_blank" className="text-accent hover:text-white no-underline">little things</a>.
                 </p>

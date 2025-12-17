@@ -10,7 +10,7 @@ export function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="space-y-8 text-base text-muted-foreground leading-relaxed font-mono"
+                    className="space-y-8 text-base text-muted-foreground leading-relaxed font-mono text-justify"
                 >
                     <p>
                         Namaste! sorohere, a CS student learning stuff for fun. <br />
@@ -28,7 +28,7 @@ export function Hero() {
                     </p>
 
                     <p>
-                        -transfer learning? obviously! DM <a href="https://twitter.com/sorohere" target="_blank" className="text-accent hover:underline">sorohere</a> on X.
+                        -transfer learning? obviously! DM <a href="https://twitter.com/sorohere" target="_blank" className="text-accent hover:text-white transition-colors">sorohere</a> on X.
                     </p>
                 </motion.div>
             </div>
