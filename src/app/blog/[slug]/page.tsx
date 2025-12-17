@@ -30,8 +30,13 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     }
 
     return (
-        <div className="max-w-4xl mx-auto px-6 py-20">
+        <div className="max-w-3xl mx-auto px-6 pb-15 font-mono">
             <Content />
+            <div className="mt-6 pt-6 text-center text-[#888888]">
+                <p className="text-sm">
+                    &copy; 2025 built with: love, GPTs, and caffeine.
+                </p>
+            </div>
         </div>
     );
 }
