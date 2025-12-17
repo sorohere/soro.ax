@@ -8,8 +8,9 @@ export function Footer() {
     const isHome = pathname === "/" || pathname === "/home";
     const isBlog = pathname.startsWith("/blog");
     const isAbout = pathname === "/about";
+    const isMe = pathname === "/me";
 
-    if (isBlog || isAbout) return null;
+    if (isBlog || isAbout || isMe) return null;
 
     return (
         <footer className="mt-0">
