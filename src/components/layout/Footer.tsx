@@ -6,6 +6,10 @@ import { usePathname } from "next/navigation";
 export function Footer() {
     const pathname = usePathname();
     const isHome = pathname === "/";
+    const isBlog = pathname === "/blog";
+    const isAbout = pathname === "/about";
+
+    if (isBlog || isAbout) return null;
 
     return (
         <footer className="mt-0">

@@ -24,11 +24,11 @@ export function Navbar() {
     return (
         <header className="w-full max-w-3xl mx-auto px-6 pt-20 pb-12">
             <div className="flex flex-col gap-2 items-start">
-                <Link href="/" className="text-xl font-bold text-white">
+                <Link href="/" className="text-2xl font-bold text-white">
                     soro
                 </Link>
 
-                <nav className="flex gap-2 text-base font-mono">
+                <nav className="flex gap-2 text-lg font-mono">
                     {isHome ? (
                         // Home page nav
                         navItems.map((item) => (
