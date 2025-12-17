@@ -20,6 +20,9 @@ export function Navbar() {
     const isBlog = pathname.startsWith("/blog");
     const isAbout = pathname === "/about";
     const isMe = pathname === "/me";
+    const isAdmin = pathname.startsWith("/admin");
+
+    if (isAdmin) return null;
 
     return (
         <header className="w-full max-w-3xl mx-auto px-6 pt-20 pb-12">

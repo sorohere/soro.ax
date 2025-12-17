@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Post = {
     slug: string;
@@ -19,6 +20,7 @@ type TimelineEvent = {
 
 export default function AdminPage() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [usernameInput, setUsernameInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
 
     const [activeTab, setActiveTab] = useState<"posts" | "timeline">("posts");
@@ -49,10 +51,10 @@ export default function AdminPage() {
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        if (passwordInput === "iamsoro") {
+        if (usernameInput === "soro" && passwordInput === "sorohere") {
             setIsAuthenticated(true);
         } else {
-            alert("Incorrect password");
+            alert("Incorrect username or password");
         }
     };
 
@@ -160,8 +162,15 @@ export default function AdminPage() {
                 <form onSubmit={handleLogin} className="flex flex-col gap-4 w-full max-w-sm">
                     <h1 className="text-2xl font-bold text-center mb-4">Admin Access</h1>
                     <input
+                        type="text"
+                        placeholder="Username"
+                        value={usernameInput}
+                        onChange={(e) => setUsernameInput(e.target.value)}
+                        className="bg-black border border-white/10 rounded p-2 text-white focus:border-accent outline-none"
+                    />
+                    <input
                         type="password"
-                        placeholder="Enter password"
+                        placeholder="Password"
                         value={passwordInput}
                         onChange={(e) => setPasswordInput(e.target.value)}
                         className="bg-black border border-white/10 rounded p-2 text-white focus:border-accent outline-none"
@@ -178,43 +187,43 @@ export default function AdminPage() {
     }
 
     return (
-        <div className="max-w-6xl mx-auto px-6 py-20 font-mono">
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold text-accent">Admin Dashboard</h1>
+        <div className="h-[calc(100vh-60px)] pt-24 max-w-7xl mx-auto px-6 font-mono flex flex-col overflow-hidden">
+            <div className="flex justify-between items-center mb-8 shrink-0">
+                <h1 className="text-3xl font-bold text-white"><Link href="/home" className="text-accent hover:text-white transition-colors">soro</Link> Dashboard</h1>
                 <div className="flex gap-4">
                     <button
                         onClick={() => setActiveTab("posts")}
-                        className={`px-4 py-2 rounded ${activeTab === "posts" ? "bg-accent text-white" : "text-muted-foreground hover:text-white"}`}
+                        className={`px-6 py-2 rounded-full border transition-all ${activeTab === "posts" ? "bg-accent border-accent text-white shadow-[0_0_15px_rgba(124,58,237,0.3)]" : "border-white/10 text-muted-foreground hover:text-white hover:border-white/30"}`}
                     >
                         Blog Posts
                     </button>
                     <button
                         onClick={() => setActiveTab("timeline")}
-                        className={`px-4 py-2 rounded ${activeTab === "timeline" ? "bg-accent text-white" : "text-muted-foreground hover:text-white"}`}
+                        className={`px-6 py-2 rounded-full border transition-all ${activeTab === "timeline" ? "bg-accent border-accent text-white shadow-[0_0_15px_rgba(124,58,237,0.3)]" : "border-white/10 text-muted-foreground hover:text-white hover:border-white/30"}`}
                     >
                         Timeline
                     </button>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-8 min-h-0">
                 {/* Sidebar: List */}
-                <div className="md:col-span-1 border-r border-white/10 pr-6">
+                <div className="md:col-span-1 border-r border-white/10 pr-6 flex flex-col min-h-0">
                     <button
                         onClick={activeTab === "posts" ? handleNewPost : handleNewEvent}
-                        className="w-full bg-accent text-white py-2 px-4 rounded mb-6 hover:bg-accent/80 transition-colors"
+                        className="w-full bg-white text-black py-3 px-4 rounded-lg mb-6 hover:bg-gray-200 transition-colors font-bold flex items-center justify-center gap-2"
                     >
-                        New {activeTab === "posts" ? "Post" : "Event"}
+                        <span>+</span> New {activeTab === "posts" ? "Post" : "Event"}
                     </button>
-                    <div className="space-y-2">
+                    <div className="space-y-2 overflow-y-auto pr-2 custom-scrollbar flex-1">
                         {activeTab === "posts"
                             ? posts.map((post) => (
                                 <button
                                     key={post.slug}
                                     onClick={() => handleSelectPost(post)}
-                                    className={`w-full text-left p-2 rounded text-sm truncate ${selectedPost?.slug === post.slug
-                                        ? "bg-white/10 text-white"
-                                        : "text-muted-foreground hover:bg-white/5"
+                                    className={`w-full text-left p-3 rounded-lg text-sm truncate transition-all ${selectedPost?.slug === post.slug
+                                        ? "bg-accent/10 text-accent border border-accent/20"
+                                        : "text-muted-foreground hover:bg-white/5 hover:text-white"
                                         }`}
                                 >
                                     {post.title || post.slug}
@@ -224,9 +233,9 @@ export default function AdminPage() {
                                 <button
                                     key={event.year}
                                     onClick={() => handleSelectEvent(event)}
-                                    className={`w-full text-left p-2 rounded text-sm truncate ${selectedEvent?.year === event.year
-                                        ? "bg-white/10 text-white"
-                                        : "text-muted-foreground hover:bg-white/5"
+                                    className={`w-full text-left p-3 rounded-lg text-sm truncate transition-all ${selectedEvent?.year === event.year
+                                        ? "bg-accent/10 text-accent border border-accent/20"
+                                        : "text-muted-foreground hover:bg-white/5 hover:text-white"
                                         }`}
                                 >
                                     {event.year} - {event.title}
@@ -236,74 +245,78 @@ export default function AdminPage() {
                 </div>
 
                 {/* Editor Area */}
-                <div className="md:col-span-3">
-                    <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="md:col-span-3 flex flex-col min-h-0">
+                    <div className="grid grid-cols-2 gap-6 mb-6 shrink-0">
                         <div>
-                            <label className="block text-sm text-muted-foreground mb-1">Title</label>
+                            <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Title</label>
                             <input
                                 type="text"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
-                                className="w-full bg-black border border-white/10 rounded p-2 text-white focus:border-accent outline-none"
+                                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-accent focus:bg-accent/5 outline-none transition-all placeholder:text-white/20"
+                                placeholder="Enter title..."
                             />
                         </div>
                         <div>
-                            <label className="block text-sm text-muted-foreground mb-1">
+                            <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">
                                 {activeTab === "posts" ? "Slug" : "Year"}
                             </label>
                             <input
                                 type="text"
                                 value={slug}
                                 onChange={(e) => setSlug(e.target.value)}
-                                className="w-full bg-black border border-white/10 rounded p-2 text-white focus:border-accent outline-none"
+                                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-accent focus:bg-accent/5 outline-none transition-all placeholder:text-white/20"
+                                placeholder={activeTab === "posts" ? "post-slug" : "2024"}
                             />
                         </div>
                     </div>
 
                     {activeTab === "posts" && (
-                        <div className="mb-4">
-                            <label className="block text-sm text-muted-foreground mb-1">Date</label>
+                        <div className="mb-6 shrink-0">
+                            <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Date</label>
                             <input
                                 type="date"
                                 value={date}
                                 onChange={(e) => setDate(e.target.value)}
-                                className="w-full bg-black border border-white/10 rounded p-2 text-white focus:border-accent outline-none"
+                                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-accent focus:bg-accent/5 outline-none transition-all"
                             />
                         </div>
                     )}
 
                     {activeTab === "timeline" && (
-                        <div className="mb-4">
-                            <label className="block text-sm text-muted-foreground mb-1">Image URL</label>
+                        <div className="mb-6 shrink-0">
+                            <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Image URL</label>
                             <input
                                 type="text"
                                 value={image}
                                 onChange={(e) => setImage(e.target.value)}
-                                className="w-full bg-black border border-white/10 rounded p-2 text-white focus:border-accent outline-none"
+                                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-accent focus:bg-accent/5 outline-none transition-all placeholder:text-white/20"
+                                placeholder="https://..."
                             />
                         </div>
                     )}
 
-                    <div className="mb-4">
-                        <label className="block text-sm text-muted-foreground mb-1">
+                    <div className="mb-6 flex-1 flex flex-col min-h-0">
+                        <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2 shrink-0">
                             {activeTab === "posts" ? "Content (Markdown)" : "Description"}
                         </label>
                         <textarea
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
-                            className="w-full h-[500px] bg-black border border-white/10 rounded p-4 text-white font-mono focus:border-accent outline-none resize-none"
+                            className="w-full flex-1 bg-white/5 border border-white/10 rounded-lg p-4 text-white font-mono focus:border-accent focus:bg-accent/5 outline-none resize-none custom-scrollbar leading-relaxed"
+                            placeholder="Start typing..."
                         />
                     </div>
 
-                    <div className="flex items-center justify-between">
-                        <p className={`text-sm ${message.includes("success") ? "text-green-500" : "text-red-500"}`}>
+                    <div className="flex items-center justify-between shrink-0 pt-4 border-t border-white/10">
+                        <p className={`text-sm font-medium ${message.includes("success") ? "text-green-400" : "text-red-400"}`}>
                             {message}
                         </p>
                         <button
                             onClick={handleSave}
-                            className="bg-white text-black py-2 px-6 rounded font-bold hover:bg-gray-200 transition-colors"
+                            className="bg-accent text-white py-2 px-8 rounded-lg font-bold hover:bg-accent/80 transition-all shadow-[0_0_20px_rgba(124,58,237,0.2)] hover:shadow-[0_0_30px_rgba(124,58,237,0.4)]"
                         >
-                            Save & Publish
+                            Save Changes
                         </button>
                     </div>
                 </div>

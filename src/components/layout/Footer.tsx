@@ -10,7 +10,21 @@ export function Footer() {
     const isAbout = pathname === "/about";
     const isMe = pathname === "/me";
 
+    const isAdmin = pathname.startsWith("/admin");
+
     if (isBlog || isAbout || isMe) return null;
+
+    if (isAdmin) {
+        return (
+            <footer className="mt-0">
+                <div className="max-w-3xl mx-auto px-6 py-32 flex justify-center">
+                    <p className="text-sm text-[#888888]">
+                        &copy; {new Date().getFullYear()} soro. Built with love and gpt&apos;s.
+                    </p>
+                </div>
+            </footer>
+        );
+    }
 
     return (
         <footer className="mt-0">
