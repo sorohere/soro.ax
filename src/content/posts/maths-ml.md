@@ -35,8 +35,6 @@ Finally, up next is Calculus, where you'll tackle limits, derivatives, integrals
 
 The [lectures](https://www.youtube.com/@ProfessorLeonard/playlists) from Prof. Leonard on YouTube were super helpful for me in grasping these concepts. They’re clear, engaging, and a great way to break down the tough stuff. And if you're looking for more hands-on practice, the resources on UrSide also offer some fantastic exercises to solidify your understanding.
 
----
-
 few recommended readings along with exercises to work on for each:
 1. [Linear Algebra and Learning from Data by Gilbert Strang](https://math.mit.edu/~gs/learningfromdata/)
 2. [Pattern Recognition and Machine Learning by Christopher M. Bishop](https://github.com/peteflorence/MachineLearning6.867/blob/master/Bishop/Bishop%20-%20Pattern%20Recognition%20and%20Machine%20Learning.pdf)

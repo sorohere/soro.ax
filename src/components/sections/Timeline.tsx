@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -29,6 +29,17 @@ export function Timeline({ events }: TimelineProps) {
             setSelectedEvent(event);
         }
     };
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape" && isModalOpen) {
+                setIsModalOpen(false);
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [isModalOpen]);
 
     return (
         <>
@@ -130,39 +141,45 @@ export function Timeline({ events }: TimelineProps) {
                             initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                            className="relative w-full max-w-4xl max-h-[90vh] bg-black border border-white/10 rounded-xl overflow-hidden flex flex-col shadow-2xl"
+                            className="relative w-full max-w-4xl max-h-[90vh] bg-black border border-white/10 rounded-xl overflow-hidden shadow-2xl"
                         >
-                            {/* Header / Image */}
-                            <div className="relative h-48 md:h-64 shrink-0">
-                                {selectedEvent.image ? (
-                                    <Image
-                                        src={selectedEvent.image}
-                                        alt={selectedEvent.title}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                ) : (
-                                    <div className="w-full h-full bg-accent/10 flex items-center justify-center">
-                                        <span className="text-accent text-4xl font-bold">{selectedEvent.year}</span>
-                                    </div>
-                                )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-                                <button
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-white/20 rounded-full text-white transition-colors backdrop-blur-md"
-                                >
-                                    <X size={20} />
-                                </button>
-                                <div className="absolute bottom-6 left-6 md:left-8 right-6">
-                                    <span className="text-accent font-mono mb-2 block">{selectedEvent.year}</span>
-                                    <h2 className="text-2xl md:text-4xl font-bold text-white">{selectedEvent.title}</h2>
-                                </div>
-                            </div>
+                            {/* Close Button - Fixed */}
+                            <button
+                                onClick={() => setIsModalOpen(false)}
+                                className="absolute top-4 right-4 z-50 p-2 bg-black/50 hover:bg-white/20 rounded-full text-white transition-colors backdrop-blur-md"
+                            >
+                                <X size={20} />
+                            </button>
 
-                            {/* Content */}
-                            <div className="flex-1 overflow-y-auto p-6 md:p-8 custom-scrollbar">
-                                <div className="prose prose-invert max-w-none font-mono">
-                                    <MarkdownRenderer content={selectedEvent.description} />
+                            {/* Scrollable Container */}
+                            <div className="overflow-y-auto max-h-[90vh] custom-scrollbar">
+                                {/* Header / Image */}
+                                <div className="relative h-48 md:h-64 w-full">
+                                    {selectedEvent.image ? (
+                                        <Image
+                                            src={selectedEvent.image}
+                                            alt={selectedEvent.title}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full bg-accent/10 flex items-center justify-center">
+                                            <span className="text-accent text-4xl font-bold">{selectedEvent.year}</span>
+                                        </div>
+                                    )}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+
+                                    <div className="absolute bottom-6 left-6 md:left-8 right-6">
+                                        <span className="text-accent font-mono mb-2 block">{selectedEvent.year}</span>
+                                        <h2 className="text-2xl md:text-4xl font-bold text-white">{selectedEvent.title}</h2>
+                                    </div>
+                                </div>
+
+                                {/* Content */}
+                                <div className="p-6 md:p-8">
+                                    <div className="prose prose-invert max-w-none font-mono">
+                                        <MarkdownRenderer content={selectedEvent.description} />
+                                    </div>
                                 </div>
                             </div>
                         </motion.div>
