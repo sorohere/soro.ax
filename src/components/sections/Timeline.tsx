@@ -41,7 +41,7 @@ export function Timeline({ events }: TimelineProps) {
                     {/* Mobile Line */}
                     <div className="md:hidden absolute left-0 top-0 bottom-0 w-[2px] bg-white/10 ml-4" />
 
-                    <div className="flex flex-col gap-12 py-4 max-h-[380px] overflow-y-auto scrollbar-hide pl-12 md:pl-0 md:pr-16">
+                    <div className="flex flex-col gap-12 py-4 max-h-[380px] md:max-h-none md:absolute md:inset-0 overflow-y-auto scrollbar-hide pl-12 md:pl-0 md:pr-16">
                         {events.map((event, index) => (
                             <div key={index} className="relative group">
                                 {/* Dot */}
