@@ -4,6 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { MarkdownRenderer } from "@/components/markdown/MarkdownRenderer";
+import { X } from "lucide-react";
 
 export type TimelineEvent = {
     year: string;
@@ -18,83 +20,155 @@ interface TimelineProps {
 
 export function Timeline({ events }: TimelineProps) {
     const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleEventClick = (event: TimelineEvent) => {
+        if (selectedEvent === event) {
+            setIsModalOpen(true);
+        } else {
+            setSelectedEvent(event);
+        }
+    };
 
     return (
-        <div className="flex flex-col md:flex-row gap-8 relative">
-            {/* Timeline Line & Nodes */}
-            <div className="relative md:w-1/3">
-                {/* Desktop Line */}
-                <div className="hidden md:block absolute right-8 top-0 bottom-0 w-[2px] bg-white/10" />
+        <>
+            <div className="flex flex-col md:flex-row gap-8 relative">
+                {/* Timeline Line & Nodes */}
+                <div className="relative md:w-1/3">
+                    {/* Desktop Line */}
+                    <div className="hidden md:block absolute right-8 top-0 bottom-0 w-[2px] bg-white/10" />
 
-                {/* Mobile Line */}
-                <div className="md:hidden absolute left-0 top-0 bottom-0 w-[2px] bg-white/10 ml-4" />
+                    {/* Mobile Line */}
+                    <div className="md:hidden absolute left-0 top-0 bottom-0 w-[2px] bg-white/10 ml-4" />
 
-                <div className="flex flex-col gap-12 py-4 max-h-[380px] overflow-y-auto scrollbar-hide pl-12 md:pl-0 md:pr-16">
-                    {events.map((event, index) => (
-                        <div key={index} className="relative group">
-                            {/* Dot */}
-                            <div
-                                className={cn(
-                                    "absolute -left-[51px] md:-right-[42px] md:left-auto top-1.5 w-5 h-5 rounded-full border-2 transition-colors cursor-pointer z-10",
-                                    selectedEvent === event ? "bg-accent border-accent" : "bg-background border-white group-hover:border-accent"
-                                )}
-                                onClick={() => setSelectedEvent(event)}
-                            />
+                    <div className="flex flex-col gap-12 py-4 max-h-[380px] overflow-y-auto scrollbar-hide pl-12 md:pl-0 md:pr-16">
+                        {events.map((event, index) => (
+                            <div key={index} className="relative group">
+                                {/* Dot */}
+                                <div
+                                    className={cn(
+                                        "absolute -left-[51px] md:-right-[42px] md:left-auto top-1.5 w-5 h-5 rounded-full border-2 transition-colors cursor-pointer z-10",
+                                        selectedEvent === event ? "bg-accent border-accent" : "bg-background border-white group-hover:border-accent"
+                                    )}
+                                    onClick={() => handleEventClick(event)}
+                                />
 
-                            {/* Content */}
-                            <div
-                                className="cursor-pointer"
-                                onClick={() => setSelectedEvent(event)}
-                            >
-                                <span className="text-accent font-mono text-sm">{event.year}</span>
-                                <h3 className={cn(
-                                    "text-lg font-bold transition-colors",
-                                    selectedEvent === event ? "text-white" : "text-muted-foreground group-hover:text-white"
-                                )}>
-                                    {event.title}
-                                </h3>
+                                {/* Content */}
+                                <div
+                                    className="cursor-pointer"
+                                    onClick={() => handleEventClick(event)}
+                                >
+                                    <span className="text-accent font-mono text-sm">{event.year}</span>
+                                    <h3 className={cn(
+                                        "text-lg font-bold transition-colors",
+                                        selectedEvent === event ? "text-white" : "text-muted-foreground group-hover:text-white"
+                                    )}>
+                                        {event.title}
+                                    </h3>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                </div>
+
+                {/* Detail View (Preview) */}
+                <div className="flex-1 min-h-[300px]">
+                    <AnimatePresence mode="wait">
+                        {selectedEvent ? (
+                            <motion.div
+                                key={selectedEvent.year}
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                transition={{ duration: 0.3 }}
+                                className="space-y-4"
+                            >
+                                {selectedEvent.image && (
+                                    <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-white/10">
+                                        <Image
+                                            src={selectedEvent.image}
+                                            alt={selectedEvent.title}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    </div>
+                                )}
+                                <div>
+                                    <h2 className="text-2xl font-bold text-white mb-2">{selectedEvent.title}</h2>
+                                    <p className="text-muted-foreground leading-relaxed font-mono line-clamp-4">
+                                        {selectedEvent.description}
+                                    </p>
+                                    <button
+                                        onClick={() => setIsModalOpen(true)}
+                                        className="text-accent hover:text-white text-sm mt-2 underline decoration-accent/50 hover:decoration-white transition-all"
+                                    >
+                                        Read more
+                                    </button>
+                                </div>
+                            </motion.div>
+                        ) : (
+                            <div className="h-full flex items-center justify-center text-muted-foreground/50 italic font-mono">
+                                Select an event to view details...
+                            </div>
+                        )}
+                    </AnimatePresence>
                 </div>
             </div>
 
-            {/* Detail View */}
-            <div className="flex-1 min-h-[300px]">
-                <AnimatePresence mode="wait">
-                    {selectedEvent ? (
+            {/* Detailed Modal */}
+            <AnimatePresence>
+                {isModalOpen && selectedEvent && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8">
                         <motion.div
-                            key={selectedEvent.year}
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            transition={{ duration: 0.3 }}
-                            className="space-y-4"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsModalOpen(false)}
+                            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            className="relative w-full max-w-4xl max-h-[90vh] bg-black border border-white/10 rounded-xl overflow-hidden flex flex-col shadow-2xl"
                         >
-                            {selectedEvent.image && (
-                                <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-white/10">
+                            {/* Header / Image */}
+                            <div className="relative h-48 md:h-64 shrink-0">
+                                {selectedEvent.image ? (
                                     <Image
                                         src={selectedEvent.image}
                                         alt={selectedEvent.title}
                                         fill
                                         className="object-cover"
                                     />
+                                ) : (
+                                    <div className="w-full h-full bg-accent/10 flex items-center justify-center">
+                                        <span className="text-accent text-4xl font-bold">{selectedEvent.year}</span>
+                                    </div>
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+                                <button
+                                    onClick={() => setIsModalOpen(false)}
+                                    className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-white/20 rounded-full text-white transition-colors backdrop-blur-md"
+                                >
+                                    <X size={20} />
+                                </button>
+                                <div className="absolute bottom-6 left-6 md:left-8 right-6">
+                                    <span className="text-accent font-mono mb-2 block">{selectedEvent.year}</span>
+                                    <h2 className="text-2xl md:text-4xl font-bold text-white">{selectedEvent.title}</h2>
                                 </div>
-                            )}
-                            <div>
-                                <h2 className="text-2xl font-bold text-white mb-2">{selectedEvent.title}</h2>
-                                <p className="text-muted-foreground leading-relaxed font-mono">
-                                    {selectedEvent.description}
-                                </p>
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1 overflow-y-auto p-6 md:p-8 custom-scrollbar">
+                                <div className="prose prose-invert max-w-none font-mono">
+                                    <MarkdownRenderer content={selectedEvent.description} />
+                                </div>
                             </div>
                         </motion.div>
-                    ) : (
-                        <div className="h-full flex items-center justify-center text-muted-foreground/50 italic font-mono">
-                            Select an event to view details...
-                        </div>
-                    )}
-                </AnimatePresence>
-            </div>
-        </div>
+                    </div>
+                )}
+            </AnimatePresence>
+        </>
     );
 }
