@@ -19,7 +19,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
     return (
         <div className="max-w-3xl mx-auto px-6 pb-15 font-mono">
-            <article className="prose prose-invert max-w-none">
+            <article className="prose prose-invert max-w-none [&>:first-child]:!mt-0">
                 <MarkdownRenderer content={post.content} />
             </article>
             <div className="mt-6 pt-6 text-center text-[#888888]">
