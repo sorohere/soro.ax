@@ -44,6 +44,7 @@ export default function AdminPage() {
     const [pinned, setPinned] = useState(false);
 
     const [message, setMessage] = useState("");
+    const [uploading, setUploading] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -70,6 +71,41 @@ export default function AdminPage() {
             const res = await fetch("/api/timeline");
             const data = await res.json();
             setTimelineEvents(data);
+        }
+    };
+
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: "image" | "content") => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setUploading(true);
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: formData,
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                if (target === "image") {
+                    setImage(data.url);
+                } else {
+                    const markdownImage = `![${file.name.split('.')[0]}](${data.url})`;
+                    setContent((prev) => prev ? prev + "\n" + markdownImage : markdownImage);
+                }
+                setMessage("Image uploaded successfully!");
+            } else {
+                setMessage("Upload failed.");
+            }
+        } catch (error) {
+            setMessage("Error uploading image.");
+        } finally {
+            setUploading(false);
+            // Reset input
+            e.target.value = "";
         }
     };
 
@@ -301,16 +337,33 @@ export default function AdminPage() {
                         />
                     </div>
 
+
+
                     {activeTab === "timeline" && (
                         <div className="mb-6 shrink-0">
-                            <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Image URL</label>
-                            <input
-                                type="text"
-                                value={image}
-                                onChange={(e) => setImage(e.target.value)}
-                                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-accent focus:bg-accent/5 outline-none transition-all placeholder:text-white/20"
-                                placeholder="https://..."
-                            />
+                            <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">
+                                Image (URL or Upload) {uploading && <span className="text-accent ml-2">Uploading...</span>}
+                            </label>
+                            <div className="flex flex-col gap-3">
+                                <input
+                                    type="text"
+                                    value={image}
+                                    onChange={(e) => setImage(e.target.value)}
+                                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-accent focus:bg-accent/5 outline-none transition-all placeholder:text-white/20"
+                                    placeholder="https://... or /uploads/..."
+                                />
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => handleFileUpload(e, "image")}
+                                    className="block w-full text-sm text-muted-foreground
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-accent/10 file:text-accent
+                                    hover:file:bg-accent/20 cursor-pointer"
+                                />
+                            </div>
                         </div>
                     )}
 
@@ -333,6 +386,17 @@ export default function AdminPage() {
                         <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2 shrink-0">
                             {activeTab === "posts" ? "Content (Markdown)" : "Description"}
                         </label>
+                        <div className="mb-2">
+                            <label className="inline-flex items-center gap-2 cursor-pointer bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 text-xs text-muted-foreground transition-colors">
+                                <span>📷 Insert Image into Content</span>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="hidden"
+                                    onChange={(e) => handleFileUpload(e, "content")}
+                                />
+                            </label>
+                        </div>
                         <textarea
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
@@ -353,7 +417,7 @@ export default function AdminPage() {
                         </button>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
