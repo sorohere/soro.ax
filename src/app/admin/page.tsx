@@ -17,6 +17,7 @@ type TimelineEvent = {
     description: string;
     image?: string;
     pinned?: boolean;
+    date?: string;
 };
 
 export default function AdminPage() {
@@ -101,6 +102,7 @@ export default function AdminPage() {
         setContent(event.description);
         setImage(event.image || "");
         setPinned(event.pinned || false);
+        setDate(event.date || ""); // Set date from event
         setMessage("");
     };
 
@@ -111,6 +113,7 @@ export default function AdminPage() {
         setContent(""); // Description
         setImage("");
         setPinned(false);
+        setDate(new Date().toISOString().split("T")[0]); // Default to today
         setMessage("");
     };
 
@@ -138,6 +141,7 @@ export default function AdminPage() {
                 title,
                 image,
                 pinned,
+                date,
             };
         }
 
@@ -274,29 +278,28 @@ export default function AdminPage() {
                         </div>
                         <div>
                             <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">
-                                {activeTab === "posts" ? "Slug" : "Year"}
+                                {activeTab === "posts" ? "Slug" : "Slug / ID"}
                             </label>
                             <input
                                 type="text"
                                 value={slug}
                                 onChange={(e) => setSlug(e.target.value)}
                                 className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-accent focus:bg-accent/5 outline-none transition-all placeholder:text-white/20"
-                                placeholder={activeTab === "posts" ? "post-slug" : "2024"}
+                                placeholder={activeTab === "posts" ? "post-slug" : "event-slug"}
                             />
                         </div>
                     </div>
 
-                    {activeTab === "posts" && (
-                        <div className="mb-6 shrink-0">
-                            <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Date</label>
-                            <input
-                                type="date"
-                                value={date}
-                                onChange={(e) => setDate(e.target.value)}
-                                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-accent focus:bg-accent/5 outline-none transition-all"
-                            />
-                        </div>
-                    )}
+                    {/* Date Input for BOTH Post and Timeline */}
+                    <div className="mb-6 shrink-0">
+                        <label className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">Date</label>
+                        <input
+                            type="date"
+                            value={date}
+                            onChange={(e) => setDate(e.target.value)}
+                            className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-accent focus:bg-accent/5 outline-none transition-all"
+                        />
+                    </div>
 
                     {activeTab === "timeline" && (
                         <div className="mb-6 shrink-0">

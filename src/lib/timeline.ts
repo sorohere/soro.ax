@@ -5,7 +5,8 @@ import matter from "gray-matter";
 const timelineDirectory = path.join(process.cwd(), "src/content/timeline");
 
 export type TimelineEvent = {
-    year: string;
+    year: string; // Keeps backwards compatibility for now, derived from date
+    date: string; // ISO string 2024-01-01
     title: string;
     description: string;
     image?: string;
@@ -31,8 +32,24 @@ export function getTimelineEventBySlug(slug: string): TimelineEvent | null {
     const fileContents = fs.readFileSync(fullPath, "utf8");
     const { data, content } = matter(fileContents);
 
+    // Date fallback logic
+    let eventDate = data.date;
+    if (!eventDate) {
+        // If slug is just a year (e.g. "2024"), default to Jan 1st
+        if (/^\d{4}$/.test(realSlug)) {
+            eventDate = `${realSlug}-01-01`;
+        } else {
+            // Try to parse realSlug as date or default to now
+            eventDate = new Date().toISOString().split('T')[0];
+        }
+    }
+
+    // Derive year from date
+    const year = eventDate.split("-")[0];
+
     return {
-        year: realSlug, // Assuming slug is the year
+        year,
+        date: eventDate,
         title: data.title || "Untitled",
         description: content,
         image: data.image || "",
@@ -46,7 +63,11 @@ export function getAllTimelineEvents(): TimelineEvent[] {
     const events = slugs
         .map((slug) => getTimelineEventBySlug(slug))
         .filter((event): event is TimelineEvent => event !== null)
-        .sort((a, b) => (parseInt(b.year) - parseInt(a.year))); // Sort by year descending
+        .sort((a, b) => {
+            if (a.pinned && !b.pinned) return -1;
+            if (!a.pinned && b.pinned) return 1;
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }); // Sort by pinned first, then date descending
     return events;
 }
 

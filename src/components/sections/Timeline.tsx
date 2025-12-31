@@ -9,6 +9,7 @@ import { X } from "lucide-react";
 
 export type TimelineEvent = {
     year: string;
+    date: string; // Added date
     title: string;
     description: string;
     image?: string;
@@ -73,7 +74,9 @@ export function Timeline({ events }: TimelineProps) {
                                     className="cursor-pointer"
                                     onClick={() => handleEventClick(event)}
                                 >
-                                    <span className="text-accent font-mono text-sm">{event.year}</span>
+                                    <span className="text-accent font-mono text-xs md:text-sm">
+                                        {new Date(event.date).toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" })}
+                                    </span>
                                     <h3 className={cn(
                                         "text-lg font-bold transition-colors",
                                         selectedEvent === event ? "text-white" : "text-muted-foreground group-hover:text-white"
@@ -174,7 +177,9 @@ export function Timeline({ events }: TimelineProps) {
                                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
 
                                     <div className="absolute bottom-6 left-6 md:left-8 right-6">
-                                        <span className="text-accent font-mono mb-2 block">{selectedEvent.year}</span>
+                                        <span className="text-accent font-mono mb-2 block">
+                                            {new Date(selectedEvent.date).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" })}
+                                        </span>
                                         <h2 className="text-2xl md:text-4xl font-bold text-white">{selectedEvent.title}</h2>
                                     </div>
                                 </div>
