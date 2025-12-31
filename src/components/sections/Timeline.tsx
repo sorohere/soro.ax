@@ -12,6 +12,7 @@ export type TimelineEvent = {
     title: string;
     description: string;
     image?: string;
+    pinned?: boolean;
 };
 
 interface TimelineProps {
@@ -19,7 +20,10 @@ interface TimelineProps {
 }
 
 export function Timeline({ events }: TimelineProps) {
-    const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(null);
+    const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(() => {
+        // Default to the first pinned event, or null if none
+        return events.find(e => e.pinned) || null;
+    });
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleEventClick = (event: TimelineEvent) => {

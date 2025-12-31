@@ -16,6 +16,7 @@ type TimelineEvent = {
     title: string;
     description: string;
     image?: string;
+    pinned?: boolean;
 };
 
 export default function AdminPage() {
@@ -39,6 +40,7 @@ export default function AdminPage() {
     const [content, setContent] = useState(""); // Post Content or Timeline Description
     const [date, setDate] = useState("");
     const [image, setImage] = useState(""); // Timeline Image URL
+    const [pinned, setPinned] = useState(false);
 
     const [message, setMessage] = useState("");
     const router = useRouter();
@@ -98,6 +100,7 @@ export default function AdminPage() {
         setTitle(event.title);
         setContent(event.description);
         setImage(event.image || "");
+        setPinned(event.pinned || false);
         setMessage("");
     };
 
@@ -107,6 +110,7 @@ export default function AdminPage() {
         setTitle("");
         setContent(""); // Description
         setImage("");
+        setPinned(false);
         setMessage("");
     };
 
@@ -133,6 +137,7 @@ export default function AdminPage() {
             body.frontmatter = {
                 title,
                 image,
+                pinned,
             };
         }
 
@@ -303,6 +308,21 @@ export default function AdminPage() {
                                 className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-accent focus:bg-accent/5 outline-none transition-all placeholder:text-white/20"
                                 placeholder="https://..."
                             />
+                        </div>
+                    )}
+
+                    {activeTab === "timeline" && (
+                        <div className="mb-6 shrink-0 flex items-center gap-3">
+                            <input
+                                type="checkbox"
+                                id="pinned"
+                                checked={pinned}
+                                onChange={(e) => setPinned(e.target.checked)}
+                                className="w-5 h-5 accent-accent cursor-pointer"
+                            />
+                            <label htmlFor="pinned" className="text-sm uppercase tracking-wider text-muted-foreground cursor-pointer select-none">
+                                Pin this event (Default Selection)
+                            </label>
                         </div>
                     )}
 

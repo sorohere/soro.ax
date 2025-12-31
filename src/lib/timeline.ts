@@ -9,6 +9,7 @@ export type TimelineEvent = {
     title: string;
     description: string;
     image?: string;
+    pinned?: boolean;
     [key: string]: any;
 };
 
@@ -35,6 +36,7 @@ export function getTimelineEventBySlug(slug: string): TimelineEvent | null {
         title: data.title || "Untitled",
         description: content,
         image: data.image || "",
+        pinned: data.pinned || false,
         ...data,
     };
 }
