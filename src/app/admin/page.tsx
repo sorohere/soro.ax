@@ -12,6 +12,7 @@ type Post = {
 };
 
 type TimelineEvent = {
+    slug: string;
     year: string;
     title: string;
     description: string;
@@ -36,7 +37,7 @@ export default function AdminPage() {
     const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(null);
 
     // Editor State
-    const [slug, setSlug] = useState(""); // Used for Post Slug or Timeline Year
+    const [slug, setSlug] = useState(""); // Used for Post Slug or Timeline Slug (filename)
     const [title, setTitle] = useState("");
     const [content, setContent] = useState(""); // Post Content or Timeline Description
     const [date, setDate] = useState("");
@@ -139,7 +140,7 @@ export default function AdminPage() {
     const handleSelectEvent = (event: TimelineEvent) => {
         setSelectedEvent(event);
         setSelectedPost(null);
-        setSlug(event.year); // Year acts as slug
+        setSlug(event.slug); // Use actual slug/filename
         setTitle(event.title);
         setContent(event.description);
         setImage(event.image || "");
@@ -151,7 +152,7 @@ export default function AdminPage() {
 
     const handleNewEvent = () => {
         setSelectedEvent(null);
-        setSlug(""); // Year
+        setSlug(""); // Slug
         setTitle("");
         setContent(""); // Description
         setImage("");
