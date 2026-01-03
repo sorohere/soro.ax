@@ -45,6 +45,10 @@ export default function AdminPage() {
 
     const [message, setMessage] = useState("");
     const [uploading, setUploading] = useState(false);
+
+    // 0 = idle, 1 = confirm, 2 = really confirm
+    const [deleteStage, setDeleteStage] = useState(0);
+
     const router = useRouter();
 
     useEffect(() => {
@@ -118,6 +122,7 @@ export default function AdminPage() {
         setDate(post.date);
         setContent(post.content);
         setMessage("");
+        setDeleteStage(0);
     };
 
     const handleNewPost = () => {
@@ -127,6 +132,7 @@ export default function AdminPage() {
         setDate(new Date().toISOString().split("T")[0]);
         setContent("");
         setMessage("");
+        setDeleteStage(0);
     };
 
     // --- Timeline Handlers ---
@@ -140,6 +146,7 @@ export default function AdminPage() {
         setPinned(event.pinned || false);
         setDate(event.date || ""); // Set date from event
         setMessage("");
+        setDeleteStage(0);
     };
 
     const handleNewEvent = () => {
@@ -151,6 +158,7 @@ export default function AdminPage() {
         setPinned(false);
         setDate(new Date().toISOString().split("T")[0]); // Default to today
         setMessage("");
+        setDeleteStage(0);
     };
 
     const handleSave = async () => {
@@ -200,6 +208,43 @@ export default function AdminPage() {
             setMessage("Error saving.");
         }
     };
+
+    const handleDelete = async () => {
+        if (!slug) return;
+
+        if (deleteStage < 2) {
+            setDeleteStage(prev => prev + 1);
+            return;
+        }
+
+        const endpoint = activeTab === "posts" ? "/api/posts" : "/api/timeline";
+
+        try {
+            const res = await fetch(endpoint, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ slug }),
+            });
+
+            if (res.ok) {
+                setMessage("Deleted successfully!");
+                if (activeTab === "posts") {
+                    handleNewPost();
+                } else {
+                    handleNewEvent();
+                }
+                fetchData();
+                setDeleteStage(0);
+            } else {
+                setMessage("Failed to delete.");
+            }
+        } catch (error) {
+            setMessage("Error deleting.");
+        }
+    };
+
 
     if (!isAuthenticated) {
         return (
@@ -409,12 +454,27 @@ export default function AdminPage() {
                         <p className={`text-sm font-medium ${message.includes("success") ? "text-green-400" : "text-red-400"}`}>
                             {message}
                         </p>
-                        <button
-                            onClick={handleSave}
-                            className="bg-accent text-white py-2 px-8 rounded-lg font-bold hover:bg-accent/80 transition-all shadow-[0_0_20px_rgba(124,58,237,0.2)] hover:shadow-[0_0_30px_rgba(124,58,237,0.4)]"
-                        >
-                            Save Changes
-                        </button>
+                        <div className="flex gap-4">
+                            {slug && (
+                                <button
+                                    onClick={handleDelete}
+                                    className={`py-2 px-6 rounded-lg font-bold transition-all ${deleteStage === 0
+                                        ? "bg-red-500/10 text-red-500 hover:bg-red-500/20"
+                                        : deleteStage === 1
+                                            ? "bg-yellow-500 text-black hover:bg-yellow-400"
+                                            : "bg-red-600 text-white hover:bg-red-700 shadow-[0_0_20px_rgba(220,38,38,0.4)]"
+                                        }`}
+                                >
+                                    {deleteStage === 0 ? "Delete" : deleteStage === 1 ? "Are you sure?" : "Really sure? (Final)"}
+                                </button>
+                            )}
+                            <button
+                                onClick={handleSave}
+                                className="bg-accent text-white py-2 px-8 rounded-lg font-bold hover:bg-accent/80 transition-all shadow-[0_0_20px_rgba(124,58,237,0.2)] hover:shadow-[0_0_30px_rgba(124,58,237,0.4)]"
+                            >
+                                Save Changes
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div >

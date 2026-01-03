@@ -84,3 +84,14 @@ export function saveTimelineEvent(slug: string, content: string, frontmatter: an
 
     return realSlug;
 }
+
+export function deleteTimelineEvent(slug: string): boolean {
+    const realSlug = slug.replace(/\.md$/, "");
+    const fullPath = path.join(timelineDirectory, `${realSlug}.md`);
+
+    if (fs.existsSync(fullPath)) {
+        fs.unlinkSync(fullPath);
+        return true;
+    }
+    return false;
+}

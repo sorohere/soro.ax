@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { saveTimelineEvent, getAllTimelineEvents } from "@/lib/timeline";
+import { saveTimelineEvent, getAllTimelineEvents, deleteTimelineEvent } from "@/lib/timeline";
 
 export async function GET() {
     const events = getAllTimelineEvents();
@@ -24,6 +24,37 @@ export async function POST(request: Request) {
         console.error("Error saving timeline event:", error);
         return NextResponse.json(
             { error: "Failed to save timeline event" },
+            { status: 500 }
+        );
+    }
+}
+
+export async function DELETE(request: Request) {
+    try {
+        const { slug } = await request.json();
+
+        if (!slug) {
+            return NextResponse.json(
+                { error: "Slug is required" },
+                { status: 400 }
+            );
+        }
+
+        const success = deleteTimelineEvent(slug);
+
+        if (success) {
+            return NextResponse.json({ success: true });
+        } else {
+            return NextResponse.json(
+                { error: "Event not found" },
+                { status: 404 }
+            );
+        }
+
+    } catch (error) {
+        console.error("Error deleting timeline event:", error);
+        return NextResponse.json(
+            { error: "Failed to delete timeline event" },
             { status: 500 }
         );
     }

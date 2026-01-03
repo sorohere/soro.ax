@@ -61,3 +61,14 @@ export function savePost(slug: string, content: string, frontmatter: any = {}) {
 
     return realSlug;
 }
+
+export function deletePost(slug: string): boolean {
+    const realSlug = slug.replace(/\.md$/, "");
+    const fullPath = path.join(postsDirectory, `${realSlug}.md`);
+
+    if (fs.existsSync(fullPath)) {
+        fs.unlinkSync(fullPath);
+        return true;
+    }
+    return false;
+}
