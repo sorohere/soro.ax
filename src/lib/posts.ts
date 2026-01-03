@@ -1,34 +1,22 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
+import { ContentService, ContentItem } from "./content-service";
 
-const postsDirectory = path.join(process.cwd(), "src/content/posts");
+const postsService = new ContentService("posts");
 
-export type Post = {
-    slug: string;
+export type Post = ContentItem & {
     title: string;
     date: string;
     content: string;
-    [key: string]: any;
 };
 
 export function getPostSlugs() {
-    if (!fs.existsSync(postsDirectory)) {
-        return [];
-    }
-    return fs.readdirSync(postsDirectory);
+    return postsService.getSlugs();
 }
 
 export function getPostBySlug(slug: string): Post | null {
-    const realSlug = slug.replace(/\.md$/, "");
-    const fullPath = path.join(postsDirectory, `${realSlug}.md`);
+    const result = postsService.getBySlug(slug);
+    if (!result) return null;
 
-    if (!fs.existsSync(fullPath)) {
-        return null;
-    }
-
-    const fileContents = fs.readFileSync(fullPath, "utf8");
-    const { data, content } = matter(fileContents);
+    const { data, content, realSlug } = result;
 
     return {
         slug: realSlug,
@@ -40,35 +28,14 @@ export function getPostBySlug(slug: string): Post | null {
 }
 
 export function getAllPosts(): Post[] {
-    const slugs = getPostSlugs();
-    const posts = slugs
-        .map((slug) => getPostBySlug(slug))
-        .filter((post): post is Post => post !== null)
+    return postsService.getAll((slug) => getPostBySlug(slug))
         .sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
-    return posts;
 }
 
 export function savePost(slug: string, content: string, frontmatter: any = {}) {
-    if (!fs.existsSync(postsDirectory)) {
-        fs.mkdirSync(postsDirectory, { recursive: true });
-    }
-
-    const realSlug = slug.replace(/\.md$/, "").replace(/[^a-z0-9-]/gi, "-").toLowerCase();
-    const fullPath = path.join(postsDirectory, `${realSlug}.md`);
-
-    const fileContent = matter.stringify(content, frontmatter);
-    fs.writeFileSync(fullPath, fileContent, "utf8");
-
-    return realSlug;
+    return postsService.save(slug, content, frontmatter);
 }
 
 export function deletePost(slug: string): boolean {
-    const realSlug = slug.replace(/\.md$/, "");
-    const fullPath = path.join(postsDirectory, `${realSlug}.md`);
-
-    if (fs.existsSync(fullPath)) {
-        fs.unlinkSync(fullPath);
-        return true;
-    }
-    return false;
+    return postsService.delete(slug);
 }

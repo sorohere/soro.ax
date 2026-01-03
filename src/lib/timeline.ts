@@ -1,36 +1,25 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
+import { ContentService, ContentItem } from "./content-service";
 
-const timelineDirectory = path.join(process.cwd(), "src/content/timeline");
+const timelineService = new ContentService("timeline");
 
-export type TimelineEvent = {
-    year: string; // Keeps backwards compatibility for now, derived from date
-    date: string; // ISO string 2024-01-01
+export type TimelineEvent = ContentItem & {
+    year: string;
+    date: string;
     title: string;
     description: string;
     image?: string;
     pinned?: boolean;
-    [key: string]: any;
 };
 
 export function getTimelineEventSlugs() {
-    if (!fs.existsSync(timelineDirectory)) {
-        return [];
-    }
-    return fs.readdirSync(timelineDirectory);
+    return timelineService.getSlugs();
 }
 
 export function getTimelineEventBySlug(slug: string): TimelineEvent | null {
-    const realSlug = slug.replace(/\.md$/, "");
-    const fullPath = path.join(timelineDirectory, `${realSlug}.md`);
+    const result = timelineService.getBySlug(slug);
+    if (!result) return null;
 
-    if (!fs.existsSync(fullPath)) {
-        return null;
-    }
-
-    const fileContents = fs.readFileSync(fullPath, "utf8");
-    const { data, content } = matter(fileContents);
+    const { data, content, realSlug } = result;
 
     // Date fallback logic
     let eventDate = data.date;
@@ -48,6 +37,7 @@ export function getTimelineEventBySlug(slug: string): TimelineEvent | null {
     const year = eventDate.split("-")[0];
 
     return {
+        slug: realSlug,
         year,
         date: eventDate,
         title: data.title || "Untitled",
@@ -59,39 +49,18 @@ export function getTimelineEventBySlug(slug: string): TimelineEvent | null {
 }
 
 export function getAllTimelineEvents(): TimelineEvent[] {
-    const slugs = getTimelineEventSlugs();
-    const events = slugs
-        .map((slug) => getTimelineEventBySlug(slug))
-        .filter((event): event is TimelineEvent => event !== null)
+    return timelineService.getAll((slug) => getTimelineEventBySlug(slug))
         .sort((a, b) => {
             if (a.pinned && !b.pinned) return -1;
             if (!a.pinned && b.pinned) return 1;
             return new Date(b.date).getTime() - new Date(a.date).getTime();
-        }); // Sort by pinned first, then date descending
-    return events;
+        });
 }
 
 export function saveTimelineEvent(slug: string, content: string, frontmatter: any = {}) {
-    if (!fs.existsSync(timelineDirectory)) {
-        fs.mkdirSync(timelineDirectory, { recursive: true });
-    }
-
-    const realSlug = slug.replace(/\.md$/, "").replace(/[^a-z0-9-]/gi, "-").toLowerCase();
-    const fullPath = path.join(timelineDirectory, `${realSlug}.md`);
-
-    const fileContent = matter.stringify(content, frontmatter);
-    fs.writeFileSync(fullPath, fileContent, "utf8");
-
-    return realSlug;
+    return timelineService.save(slug, content, frontmatter);
 }
 
 export function deleteTimelineEvent(slug: string): boolean {
-    const realSlug = slug.replace(/\.md$/, "");
-    const fullPath = path.join(timelineDirectory, `${realSlug}.md`);
-
-    if (fs.existsSync(fullPath)) {
-        fs.unlinkSync(fullPath);
-        return true;
-    }
-    return false;
+    return timelineService.delete(slug);
 }

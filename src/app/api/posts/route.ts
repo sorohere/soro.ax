@@ -40,9 +40,23 @@ export async function DELETE(request: Request) {
             );
         }
 
+        // 1. Get the post before deleting to find images
+        const { getPostBySlug } = await import("@/lib/posts");
+        const post = getPostBySlug(slug);
+
+        // 2. Delete the post
         const success = deletePost(slug);
 
         if (success) {
+            // 3. Cleanup unused images if the post was found and deleted
+            if (post) {
+                const { deleteUnusedImages, extractImageReferences } = await import("@/lib/image-cleanup");
+                const imagesToCheck = extractImageReferences(post.content, post);
+                // Run cleanup asynchronously (fire and forget) to not block response? 
+                // Or await it? Awaiting is safer to ensure it completes.
+                deleteUnusedImages(imagesToCheck);
+            }
+
             return NextResponse.json({ success: true });
         } else {
             return NextResponse.json(

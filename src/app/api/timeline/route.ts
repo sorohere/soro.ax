@@ -40,9 +40,22 @@ export async function DELETE(request: Request) {
             );
         }
 
+        // 1. Get event before deleting
+        const { getTimelineEventBySlug } = await import("@/lib/timeline");
+        const event = getTimelineEventBySlug(slug);
+
+        // 2. Delete event
         const success = deleteTimelineEvent(slug);
 
         if (success) {
+            // 3. Cleanup images
+            if (event) {
+                const { deleteUnusedImages, extractImageReferences } = await import("@/lib/image-cleanup");
+                // Timeline uses 'description' for content
+                const imagesToCheck = extractImageReferences(event.description, event);
+                deleteUnusedImages(imagesToCheck);
+            }
+
             return NextResponse.json({ success: true });
         } else {
             return NextResponse.json(
