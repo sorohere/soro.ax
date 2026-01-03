@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { saveTimelineEvent, getAllTimelineEvents, deleteTimelineEvent } from "@/lib/timeline";
 
-export async function GET() {
-    const events = getAllTimelineEvents();
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url);
+    const isAdmin = searchParams.get("admin") === "true";
+    const events = getAllTimelineEvents({ includeDrafts: isAdmin });
     return NextResponse.json(events);
 }
 

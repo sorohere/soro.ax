@@ -1,6 +1,7 @@
 ---
-title: "Maths and Machine Learning"
-date: "2024-03-05"
+title: Maths and Machine Learning
+date: '2024-03-05'
+published: true
 ---
 
 ## Maths and Machine Learning

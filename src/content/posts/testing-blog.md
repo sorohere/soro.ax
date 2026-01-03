@@ -1,8 +1,9 @@
 ---
 title: testing-blog
 date: '2026-01-03'
+published: true
 ---
-i am cooler of this site is its working perfect or not hero academica
+its me cooler here, oops i did a mistake sorry about it buddy. 
 
 ![i am sorohere](/uploads/1767471956481-chatgpt-image-jan-2--2026--01-30-57-am.png)
 

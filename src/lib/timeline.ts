@@ -9,6 +9,7 @@ export type TimelineEvent = ContentItem & {
     description: string;
     image?: string;
     pinned?: boolean;
+    published?: boolean;
 };
 
 export function getTimelineEventSlugs() {
@@ -44,12 +45,14 @@ export function getTimelineEventBySlug(slug: string): TimelineEvent | null {
         description: content,
         image: data.image || "",
         pinned: data.pinned || false,
+        published: data.published ?? true, // Default true
         ...data,
     };
 }
 
-export function getAllTimelineEvents(): TimelineEvent[] {
+export function getAllTimelineEvents(options: { includeDrafts?: boolean } = {}): TimelineEvent[] {
     return timelineService.getAll((slug) => getTimelineEventBySlug(slug))
+        .filter(event => options.includeDrafts || event.published)
         .sort((a, b) => {
             if (a.pinned && !b.pinned) return -1;
             if (!a.pinned && b.pinned) return 1;

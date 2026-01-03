@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { savePost, getAllPosts, deletePost } from "@/lib/posts";
 
-export async function GET() {
-    const posts = getAllPosts();
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url);
+    const isAdmin = searchParams.get("admin") === "true";
+    const posts = getAllPosts({ includeDrafts: isAdmin });
     return NextResponse.json(posts);
 }
 
