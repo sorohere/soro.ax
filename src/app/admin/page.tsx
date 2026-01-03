@@ -231,7 +231,7 @@ export default function AdminPage() {
     const handleDelete = async () => {
         // ... (existing implementation) ...
         if (!slug) return;
-        if (deleteStage < 2) {
+        if (deleteStage < 1) {
             setDeleteStage(prev => prev + 1);
             return;
         }
@@ -483,14 +483,12 @@ export default function AdminPage() {
                             {slug && (
                                 <button
                                     onClick={handleDelete}
-                                    className={`py-2 px-6 rounded-lg font-bold transition-all ${deleteStage === 0
+                                    className={`py-2 rounded-lg font-bold transition-colors w-28 text-center ${deleteStage === 0
                                         ? "bg-red-500/10 text-red-500 hover:bg-red-500/20"
-                                        : deleteStage === 1
-                                            ? "bg-yellow-500 text-black hover:bg-yellow-400"
-                                            : "bg-red-600 text-white hover:bg-red-700 shadow-[0_0_20px_rgba(220,38,38,0.4)]"
+                                        : "bg-red-600 text-white hover:bg-red-700 shadow-[0_0_20px_rgba(220,38,38,0.4)]"
                                         }`}
                                 >
-                                    {deleteStage === 0 ? "Delete" : deleteStage === 1 ? "Are you sure?" : "Really sure? (Final)"}
+                                    {deleteStage === 0 ? "Delete" : "Confirm"}
                                 </button>
                             )}
                             {/* Save Draft Button */}
@@ -727,14 +725,12 @@ export default function AdminPage() {
                             {slug && (
                                 <button
                                     onClick={handleDelete}
-                                    className={`py-2 px-6 rounded-lg font-bold transition-all ${deleteStage === 0
+                                    className={`py-2 rounded-lg font-bold transition-colors w-28 text-center ${deleteStage === 0
                                         ? "bg-red-500/10 text-red-500 hover:bg-red-500/20"
-                                        : deleteStage === 1
-                                            ? "bg-yellow-500 text-black hover:bg-yellow-400"
-                                            : "bg-red-600 text-white hover:bg-red-700 shadow-[0_0_20px_rgba(220,38,38,0.4)]"
+                                        : "bg-red-600 text-white hover:bg-red-700 shadow-[0_0_20px_rgba(220,38,38,0.4)]"
                                         }`}
                                 >
-                                    {deleteStage === 0 ? "Delete" : deleteStage === 1 ? "Are you sure?" : "Really sure? (Final)"}
+                                    {deleteStage === 0 ? "Delete" : "Confirm"}
                                 </button>
                             )}
                             {/* Save Draft Button */}
