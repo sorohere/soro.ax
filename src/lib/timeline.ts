@@ -22,8 +22,11 @@ export function getTimelineEventBySlug(slug: string): TimelineEvent | null {
 
     const { data, content, realSlug } = result;
 
-    // Date fallback logic
     let eventDate = data.date;
+    if (eventDate instanceof Date) {
+        eventDate = eventDate.toISOString().split('T')[0];
+    }
+
     if (!eventDate) {
         // If slug is just a year (e.g. "2024"), default to Jan 1st
         if (/^\d{4}$/.test(realSlug)) {
