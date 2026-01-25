@@ -13,7 +13,7 @@ export function Hero() {
                     className="space-y-8 text-base text-muted-foreground leading-relaxed font-mono text-justify"
                 >
                     <p>
-                        Namaste! sorohere, a CS student learning stuff for fun. <br />
+                        Namaste! sorohere, a CS student learning stuff for fun.
                         Into cinema, photography, music, and random hobbies.
                     </p>
 
@@ -22,8 +22,8 @@ export function Hero() {
                     </p>
 
                     <p>
-                        I build models (the nerdy kind, not the runway ones) <br />
-                        obsessed with ML, code, and finding patterns in chaos. <br />
+                        I build models (the nerdy kind, not the runway ones)
+                        obsessed with ML, code, and finding patterns in chaos.
                         random projects and quirky experiments.
                     </p>
 
