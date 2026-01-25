@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export function Hero() {
     return (
-        <section className="relative pt-8 pb-4 flex flex-col justify-center items-center overflow-hidden aurora-bg">
+        <section className="relative pt-8 pb-3 flex flex-col justify-center items-center overflow-hidden aurora-bg">
             <div className="w-full max-w-4xl px-6 z-10 text-center">
                 {/* Glitch Effect Name */}
                 <motion.div
@@ -24,7 +24,7 @@ export function Hero() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.8 }}
-                    className="text-lg md:text-xl text-muted-foreground font-mono max-w-xl mx-auto"
+                    className="text-xl md:text-2xl text-muted-foreground font-mono max-w-full mx-auto tracking-wide font-medium"
                 >
                     technologist in preparation.
                     <span className="text-accent"> explorer by intent.</span>

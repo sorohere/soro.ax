@@ -10,18 +10,20 @@ const cards = [
         colSpan: "col-span-1 md:col-span-2",
         content: (
             <div className="h-full flex flex-col justify-between p-6">
-                <div>
-                    <h3 className="text-xl font-bold text-white mb-2">Core Philosophy</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed font-mono">
-                        "Live beyond life. Be beyond being. Exist beyond existence."
-                    </p>
-                    <p className="text-muted-foreground/60 text-xs mt-2">
+                <div className="flex justify-between items-start">
+                    <div>
+                        <h3 className="text-xl font-bold text-white mb-2">Core Philosophy</h3>
+                        <p className="text-muted-foreground text-sm leading-relaxed font-mono relative z-10">
+                            "Live beyond life. Be beyond being. Exist beyond existence."
+                        </p>
+                    </div>
+                    <span className="text-[10px] text-white/20 font-mono tracking-widest uppercase border border-white/10 px-2 py-0.5 rounded h-fit">ID</span>
+                </div>
+
+                <div className="mt-3 flex flex-col gap-1">
+                    <p className="text-muted-foreground/50 text-xs italic">
                         Not to judge. Not to get offended. Not to react.
                     </p>
-                </div>
-                <div className="mt-4 flex gap-2">
-                    <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-accent">Saurabh</span>
-                    <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-accent">India</span>
                 </div>
             </div>
         )
@@ -31,7 +33,8 @@ const cards = [
         colSpan: "col-span-1",
         href: "https://linkedin.com/in/sorohere",
         content: (
-            <div className="h-full flex flex-col items-center justify-center p-6 group hover:bg-[#0077B5]/10 transition-colors">
+            <div className="h-full flex flex-col items-center justify-center p-6 group hover:bg-[#0077B5]/10 transition-colors relative">
+                <div className="absolute top-4 left-4 text-[10px] text-white/20 font-mono tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity">Connect</div>
                 <Linkedin className="w-8 h-8 text-muted-foreground group-hover:text-[#0077B5] transition-colors mb-2" />
                 <span className="text-sm font-medium text-white">LinkedIn</span>
             </div>
@@ -42,7 +45,8 @@ const cards = [
         colSpan: "col-span-1",
         href: "https://github.com/sorohere",
         content: (
-            <div className="h-full flex flex-col items-center justify-center p-6 group hover:bg-white/10 transition-colors">
+            <div className="h-full flex flex-col items-center justify-center p-6 group hover:bg-white/10 transition-colors relative">
+                <div className="absolute top-4 left-4 text-[10px] text-white/20 font-mono tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity">Git</div>
                 <Github className="w-8 h-8 text-muted-foreground group-hover:text-white transition-colors mb-2" />
                 <span className="text-sm font-medium text-white">GitHub</span>
             </div>
@@ -52,16 +56,23 @@ const cards = [
         id: "stack",
         colSpan: "col-span-1 md:col-span-2",
         content: (
-            <div className="h-full p-6 flex items-center justify-between">
-                <div>
-                    <h3 className="text-lg font-bold text-white mb-1">Domain</h3>
-                    <p className="text-xs text-muted-foreground">AI • Machine Learning • Speech</p>
+            <div className="h-full p-6 flex flex-col justify-between">
+                <div className="flex justify-between items-start">
+                    <h3 className="text-lg font-bold text-white">Domain</h3>
+                    <span className="text-[10px] text-white/20 font-mono tracking-widest uppercase border border-white/10 px-2 py-0.5 rounded">Tech</span>
                 </div>
-                <div className="flex gap-3 text-muted-foreground">
-                    <Code2 className="w-6 h-6 hover:text-accent transition-colors" />
-                    <Cpu className="w-6 h-6 hover:text-accent transition-colors" />
-                    <div className="w-px h-6 bg-white/10" />
-                    <span className="text-xs font-mono self-center">VAD • CV • TFLite • NLP</span>
+
+                <div className="flex flex-col gap-3 mt-2">
+                    <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                        <Cpu className="w-4 h-4 text-accent/70" />
+                        <span>AI / ML Core</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                        <Code2 className="w-4 h-4 text-accent/70" />
+                        <span>Speech & VAD</span>
+                    </div>
+                    <div className="w-full h-px bg-white/5 my-1" />
+                    <span className="text-xs font-mono text-white/40">CV • TFLite • NLP • Systems</span>
                 </div>
             </div>
         )
@@ -71,16 +82,19 @@ const cards = [
         colSpan: "col-span-1 md:col-span-2",
         content: (
             <div className="h-full p-6 flex items-center gap-4">
-                <div className="w-12 h-12 bg-white/5 rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 bg-white/5 rounded-lg flex items-center justify-center shrink-0">
                     <Mountain className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 mb-1">
                         <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
                         <span className="text-xs text-muted-foreground uppercase tracking-wider">Current Focus</span>
                     </div>
-                    <p className="text-sm font-medium text-white truncate max-w-[200px]">
+                    <p className="text-sm font-medium text-white leading-tight">
                         Data @ IBM & High Altitude Ops
+                    </p>
+                    <p className="text-xs text-white/30 mt-1 font-mono">
+                        (systems + self)
                     </p>
                 </div>
             </div>
@@ -115,12 +129,12 @@ export function BentoGrid() {
                 ))}
             </div>
 
-            {/* Terminal Player Strip */}
+            {/* Terminal Player Strip - Reduced Opacity */}
             <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="w-full bg-black/50 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden flex flex-col md:flex-row items-center justify-between p-4 gap-4"
+                className="w-full bg-black/30 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden flex flex-col md:flex-row items-center justify-between p-3 gap-4 opacity-80 hover:opacity-100 transition-opacity"
             >
                 <div className="flex items-center gap-4 w-full md:w-auto overflow-hidden">
                     {/* Terminal Status */}
