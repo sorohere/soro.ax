@@ -64,12 +64,22 @@ export default function AdminPage() {
         }
     }, [isAuthenticated, activeTab]);
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (usernameInput === "soro" && passwordInput === "sorohere") {
-            setIsAuthenticated(true);
-        } else {
-            alert("Incorrect username or password");
+        try {
+            const res = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username: usernameInput, password: passwordInput }),
+            });
+            const data = await res.json();
+            if (data.success) {
+                setIsAuthenticated(true);
+            } else {
+                alert("Incorrect username or password");
+            }
+        } catch (error) {
+            alert("Login failed");
         }
     };
 
