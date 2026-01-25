@@ -48,37 +48,42 @@ export function Timeline({ events }: TimelineProps) {
 
     return (
         <>
-            <div className="flex flex-col md:flex-row gap-8 relative">
+            <div className="flex flex-col md:flex-row gap-8 relative py-12">
                 {/* Timeline Line & Nodes */}
                 <div className="relative md:w-1/3">
-                    {/* Desktop Line */}
-                    <div className="hidden md:block absolute right-8 top-0 bottom-0 w-[2px] bg-white/10" />
+                    {/* Desktop Line - Gradient Fade */}
+                    <div className="hidden md:block absolute right-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
                     {/* Mobile Line */}
-                    <div className="md:hidden absolute left-0 top-0 bottom-0 w-[2px] bg-white/10 ml-4" />
+                    <div className="md:hidden absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-white/10 to-transparent ml-4" />
 
-                    <div className="flex flex-col gap-12 py-4 max-h-[380px] md:max-h-none md:absolute md:inset-0 overflow-y-auto scrollbar-hide pl-12 md:pl-0 md:pr-16">
+                    <div className="flex flex-col gap-12 py-4 max-h-[500px] md:max-h-none md:absolute md:inset-0 overflow-y-auto scrollbar-hide pl-12 md:pl-0 md:pr-16">
                         {events.map((event, index) => (
                             <div key={index} className="relative group">
-                                {/* Dot */}
+                                {/* Glowing Dot */}
                                 <div
                                     className={cn(
-                                        "absolute -left-[51px] md:-right-[42px] md:left-auto top-1.5 w-5 h-5 rounded-full border-2 transition-colors cursor-pointer z-10",
-                                        selectedEvent === event ? "bg-accent border-accent" : "bg-background border-white group-hover:border-accent"
+                                        "absolute -left-[51px] md:-right-[42px] md:left-auto top-1.5 w-5 h-5 rounded-full border-2 transition-all duration-300 cursor-pointer z-10",
+                                        selectedEvent === event
+                                            ? "bg-accent border-accent shadow-[0_0_15px_rgba(116,96,224,0.6)] scale-110"
+                                            : "bg-black border-white/20 group-hover:border-accent group-hover:bg-accent/20"
                                     )}
                                     onClick={() => handleEventClick(event)}
                                 />
 
                                 {/* Content */}
                                 <div
-                                    className="cursor-pointer"
+                                    className="cursor-pointer group-hover:translate-x-1 transition-transform duration-300"
                                     onClick={() => handleEventClick(event)}
                                 >
-                                    <span className="text-accent font-mono text-xs md:text-sm">
+                                    <span className={cn(
+                                        "font-mono text-xs md:text-sm mb-1 block transition-colors",
+                                        selectedEvent === event ? "text-accent" : "text-muted-foreground"
+                                    )}>
                                         {new Date(event.date).toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" })}
                                     </span>
                                     <h3 className={cn(
-                                        "text-lg font-bold transition-colors",
+                                        "text-lg font-bold transition-colors leading-tight",
                                         selectedEvent === event ? "text-white" : "text-muted-foreground group-hover:text-white"
                                     )}>
                                         {event.title}
@@ -90,7 +95,7 @@ export function Timeline({ events }: TimelineProps) {
                 </div>
 
                 {/* Detail View (Preview) */}
-                <div className="flex-1 min-h-[300px]">
+                <div className="flex-1 min-h-[400px]">
                     <AnimatePresence mode="wait">
                         {selectedEvent ? (
                             <motion.div
@@ -99,34 +104,44 @@ export function Timeline({ events }: TimelineProps) {
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: -20 }}
                                 transition={{ duration: 0.3 }}
-                                className="space-y-4"
+                                className="glass-panel p-8 rounded-2xl h-full flex flex-col"
                             >
                                 {selectedEvent.image && (
-                                    <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-white/10">
+                                    <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-white/10 mb-6 group cursor-pointer" onClick={() => setIsModalOpen(true)}>
                                         <Image
                                             src={selectedEvent.image}
                                             alt={selectedEvent.title}
                                             fill
-                                            className="object-cover"
+                                            className="object-cover transition-transform duration-700 group-hover:scale-105"
                                         />
+                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <span className="text-white text-sm font-bold uppercase tracking-widest">Expand</span>
+                                        </div>
                                     </div>
                                 )}
-                                <div>
-                                    <h2 className="text-2xl font-bold text-white mb-2">{selectedEvent.title}</h2>
-                                    <p className="text-muted-foreground leading-relaxed font-mono line-clamp-4">
+                                <div className="flex-1">
+                                    <div className="flex items-baseline justify-between mb-2">
+                                        <h2 className="text-2xl font-bold text-white tracking-tight">{selectedEvent.title}</h2>
+                                        <span className="font-mono text-accent text-sm">
+                                            {new Date(selectedEvent.date).getFullYear()}
+                                        </span>
+                                    </div>
+
+                                    <p className="text-muted-foreground leading-relaxed font-mono line-clamp-6 text-sm md:text-base">
                                         {selectedEvent.description}
                                     </p>
-                                    <button
-                                        onClick={() => setIsModalOpen(true)}
-                                        className="text-accent hover:text-white text-sm mt-2 underline decoration-accent/50 hover:decoration-white transition-all"
-                                    >
-                                        Read more
-                                    </button>
                                 </div>
+
+                                <button
+                                    onClick={() => setIsModalOpen(true)}
+                                    className="mt-6 w-full py-3 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-sm font-bold text-white transition-all uppercase tracking-wider"
+                                >
+                                    Read Full Log
+                                </button>
                             </motion.div>
                         ) : (
-                            <div className="h-full flex items-center justify-center text-muted-foreground/50 italic font-mono">
-                                Select an event to view details...
+                            <div className="h-full glass-panel rounded-2xl flex items-center justify-center text-muted-foreground/50 italic font-mono p-8 text-center border-dashed">
+                                Select a node from the timeline to decrypt details...
                             </div>
                         )}
                     </AnimatePresence>

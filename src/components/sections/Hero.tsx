@@ -4,34 +4,33 @@ import { motion } from "framer-motion";
 
 export function Hero() {
     return (
-        <section className="flex flex-col justify-start pb-4">
-            <div className="max-w-3xl mx-auto px-6 w-full">
+        <section className="relative pt-8 pb-4 flex flex-col justify-center items-center overflow-hidden aurora-bg">
+            <div className="w-full max-w-4xl px-6 z-10 text-center">
+                {/* Glitch Effect Name */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="space-y-8 text-base text-muted-foreground leading-relaxed font-mono text-justify"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8 }}
+                    className="relative inline-block -mb-2 md:-mb-6"
                 >
-                    <p>
-                        Namaste! sorohere, a CS student learning stuff for fun.
-                        Into cinema, photography, music, and random hobbies.
-                    </p>
-
-                    <p className="text-foreground font-medium">
-                        step into my little slice of the internet!
-                    </p>
-
-                    <p>
-                        I build models (the nerdy kind, not the runway ones)
-                        obsessed with ML, code, and finding patterns in chaos.
-                        random projects and quirky experiments.
-                    </p>
-
-                    <p>
-                        -transfer learning? obviously! DM <a href="https://twitter.com/sorohere" target="_blank" className="text-accent hover:text-white transition-colors">sorohere</a> on X.
-                    </p>
+                    <h1 className="text-5xl md:text-9xl font-black tracking-tighter text-white leading-[0.8]">
+                        soro
+                        <span className="text-white/50">here</span>
+                    </h1>
                 </motion.div>
+
+                {/* Minimal Subtitle */}
+                <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.8 }}
+                    className="text-lg md:text-xl text-muted-foreground font-mono max-w-xl mx-auto"
+                >
+                    technologist in preparation.
+                    <span className="text-accent"> explorer by intent.</span>
+                </motion.p>
             </div>
+
         </section>
     );
 }
