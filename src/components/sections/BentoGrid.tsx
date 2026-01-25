@@ -167,15 +167,15 @@ export function BentoGrid() {
                             <motion.div
                                 key={i}
                                 animate={{
-                                    height: ["20%", "80%", "40%", "90%", "30%"],
-                                    opacity: [0.5, 1, 0.5]
+                                    height: ["30%", "60%", "45%", "70%", "40%"],
+                                    opacity: [0.6, 0.9, 0.6]
                                 }}
                                 transition={{
-                                    duration: 0.4 + Math.random() * 0.3,
+                                    duration: 1.2 + Math.random() * 0.5,
                                     repeat: Infinity,
                                     repeatType: "reverse",
                                     ease: "easeInOut",
-                                    delay: i * 0.05
+                                    delay: i * 0.08
                                 }}
                                 className="w-1 bg-accent rounded-sm"
                             />

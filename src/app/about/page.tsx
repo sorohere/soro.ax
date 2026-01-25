@@ -1,156 +1,80 @@
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+"use client";
+
+import { motion } from "framer-motion";
 
 export default function AboutPage() {
     return (
-        <div className="max-w-4xl mx-auto px-6 py-12 pb-20">
-            <h1 className="text-4xl font-bold mb-12 text-white tracking-tight">
-                readme_<span className="text-accent">.md</span>
-            </h1>
+        <div className="max-w-3xl mx-auto px-6 py-8 font-sans selection:bg-purple-500/30 selection:text-white">
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {/* Main Content - Col Span 2 */}
-                <div className="md:col-span-2 space-y-12">
+            {/* Name + Quiet Anchor */}
+            <motion.header
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="mb-10"
+            >
+                <div>
+                    <h1 className="text-2xl font-bold tracking-tight text-white">
+                        <span className="text-accent">Saurabh</span> Kushwaha
+                    </h1>
+                    <p className="text-xs text-muted-foreground/60 mt-1 font-mono tracking-wider">
+                        Systems Engineer
+                    </p>
+                </div>
+            </motion.header>
 
-                    {/* Basic Info */}
-                    <section className="glass-panel p-8 rounded-2xl">
-                        <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                            <span className="text-accent">#</span> whoami
-                        </h2>
-                        <div className="space-y-4 text-muted-foreground leading-relaxed font-mono">
-                            <p>
-                                I am <span className="text-white">Saurabh Kushwaha</span> from India.
-                            </p>
-                            <p>
-                                A technologist in preparation and an explorer by intent. I use extreme environments—mountains, cold, altitude, silence—as tools for self-understanding.
-                            </p>
-                            <p>
-                                Currently working with <span className="text-white">IBM</span> on Data & ML, focusing on Speech Processing and Computer Vision.
-                            </p>
-                        </div>
-                    </section>
+            {/* Content */}
+            <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="space-y-10"
+            >
+                {/* WORK Section */}
+                <section className="space-y-3">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/30 font-mono">
+                        Work
+                    </span>
 
-                    {/* Philosophy */}
-                    <section className="glass-panel p-8 rounded-2xl">
-                        <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                            <span className="text-accent">#</span> operating_principle
-                        </h2>
-                        <div className="space-y-4 text-muted-foreground leading-relaxed font-mono italic border-l-2 border-accent/30 pl-4">
-                            <p>"Live beyond life. Be beyond being. Exist beyond existence."</p>
-                        </div>
-                        <div className="mt-6 space-y-2 font-mono text-sm text-white/80">
-                            <p>• Not to judge</p>
-                            <p>• Not to get offended</p>
-                            <p>• Not to react</p>
-                        </div>
-                    </section>
-
-                    {/* Tech Stack Details */}
-                    <section className="glass-panel p-8 rounded-2xl">
-                        <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                            <span className="text-accent">#</span> technical_domain
-                        </h2>
-                        <div className="space-y-4">
-                            <div>
-                                <h3 className="text-sm font-bold text-white mb-2 uppercase tracking-wider">AI / ML Core</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {['Speech Processing', 'VAD', 'Audio Segmentation', 'Computer Vision', 'TFLite', 'PyTorch'].map(tech => (
-                                        <span key={tech} className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-xs text-muted-foreground transition-colors hover:text-white cursor-default">
-                                            {tech}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="text-sm font-bold text-white mb-2 uppercase tracking-wider">Engineering</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {['Python', 'Next.js', 'Typescript', 'Linux', 'Git', 'Docker'].map(tech => (
-                                        <span key={tech} className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-xs text-muted-foreground transition-colors hover:text-white cursor-default">
-                                            {tech}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Adventures */}
-                    <section className="glass-panel p-8 rounded-2xl border-accent/20">
-                        <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-                            <span className="text-accent">#</span> ultimate_objective
-                        </h2>
-                        <p className="text-sm text-muted-foreground mb-6 font-mono">
-                            To become capable of climbing all 14 peaks above 8,000 meters.
+                    <div className="text-lg text-muted-foreground leading-relaxed space-y-4">
+                        <p>
+                            I'm interested in how systems behave when conditions are <span className="text-white">no longer ideal</span>. Most of what I work on lives where clarity has to be earned.
                         </p>
+                        <p>
+                            My focus is on building and evaluating things that need to work outside controlled environments. I spend time examining edge cases, trade-offs, and long-term behavior. I'm comfortable moving slowly if it leads to more reliable outcomes. I care more about durability than visibility.
+                        </p>
+                    </div>
+                </section>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
-                            <div className="space-y-2">
-                                <h3 className="text-white font-bold opacity-50">Operations: India</h3>
-                                <ul className="space-y-1 text-muted-foreground">
-                                    <li>[ ] Kuari Pass (Garhwal)</li>
-                                    <li>[ ] Kashmir Great Lakes</li>
-                                    <li>[ ] Rupin Pass</li>
-                                    <li>[ ] Goecha La (Sikkim)</li>
-                                    <li>[ ] Chadar Trek (Frozen River)</li>
-                                    <li>[ ] Stok Kangri</li>
-                                </ul>
-                            </div>
-                            <div className="space-y-2">
-                                <h3 className="text-white font-bold opacity-50">Operations: Global</h3>
-                                <ul className="space-y-1 text-muted-foreground">
-                                    <li>[ ] Aurora Borealis (Nordic)</li>
-                                    <li>[ ] Aurora Australis (Antarctica)</li>
-                                    <li>[ ] Solo Scuba (Bali/Gili)</li>
-                                    <li>[ ] Solo Skydiving (Thailand)</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </section>
-                </div>
+                {/* OUTSIDE WORK Section */}
+                <section className="space-y-3">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/30 font-mono">
+                        Outside Work
+                    </span>
 
-                {/* Sidebar - Col Span 1 */}
-                <div className="space-y-6">
-                    <section className="glass-panel p-6 rounded-2xl">
-                        <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider text-muted-foreground">Connect</h3>
-                        <ul className="space-y-3 font-mono text-sm">
-                            <li>
-                                <Link href="https://linkedin.com/in/sorohere" target="_blank" className="flex items-center justify-between group text-muted-foreground hover:text-accent transition-colors">
-                                    <span>LinkedIn</span>
-                                    <ArrowUpRight className="w-4 h-4 opacity-50 group-hover:opacity-100" />
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="https://github.com/sorohere" target="_blank" className="flex items-center justify-between group text-muted-foreground hover:text-accent transition-colors">
-                                    <span>GitHub</span>
-                                    <ArrowUpRight className="w-4 h-4 opacity-50 group-hover:opacity-100" />
-                                </Link>
-                            </li>
-                        </ul>
-                    </section>
+                    <p className="text-lg text-muted-foreground leading-relaxed">
+                        I'm drawn to places that strip life down to essentials. Mountains and open skies give me a sense of scale and perspective. I actively seek situations that carry real risk, effort, and uncertainty. The thrill isn't about escape—it sharpens focus and keeps me present.
+                    </p>
+                </section>
 
-                    <section className="glass-panel p-6 rounded-2xl">
-                        <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider text-muted-foreground">Traits</h3>
-                        <div className="flex flex-wrap gap-2">
-                            {['Curious', 'Depth-Oriented', 'Disciplined', 'Stoic'].map(trait => (
-                                <span key={trait} className="px-2 py-1 bg-accent/10 text-accent text-xs rounded border border-accent/20">
-                                    {trait}
-                                </span>
-                            ))}
-                        </div>
-                    </section>
+                {/* OPEN INVITE Section */}
+                <section className="space-y-3">
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/30 font-mono">
+                        Open Invite
+                    </span>
 
-                    <section className="glass-panel p-6 rounded-2xl">
-                        <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider text-muted-foreground">Status</h3>
-                        <div className="flex items-center gap-3">
-                            <span className="relative flex h-3 w-3">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
-                            </span>
-                            <span className="text-sm text-white font-medium">Training & Deploying</span>
-                        </div>
-                    </section>
-                </div>
-            </div>
+                    <div className="space-y-4 text-base text-muted-foreground/70 leading-relaxed">
+                        <p>
+                            If any of this sounds unreasonable, uncomfortable, or unnecessary to most people, it's probably the right kind of thing.
+                        </p>
+                        <p className="text-muted-foreground/50">
+                            If that resonates, we'll probably get along.
+                        </p>
+                    </div>
+                </section>
+
+            </motion.div>
+
         </div>
     );
 }
