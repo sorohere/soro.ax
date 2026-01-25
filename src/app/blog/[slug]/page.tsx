@@ -54,8 +54,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                     {post.title}
                 </h1>
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <span>{readTime} min read</span>
-                    <span className="text-white/20">|</span>
                     <span className="italic">Status: READ_ONLY</span>
                 </div>
             </div>
@@ -71,7 +69,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                     </div>
                 </div>
 
-                <article className="prose prose-invert prose-p:font-mono prose-headings:font-bold prose-a:text-accent hover:prose-a:text-white max-w-none">
+                <article className="prose prose-invert prose-p:font-mono prose-headings:font-bold prose-a:text-accent max-w-none">
                     <MarkdownRenderer content={post.content} />
                 </article>
             </div>

@@ -12,12 +12,12 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     return (
         <ReactMarkdown
             components={{
-                h1: ({ node, ...props }) => <h1 className="text-accent text-3xl font-bold mt-8 mb-4" {...props} />,
-                h2: ({ node, ...props }) => <h2 className="text-accent text-2xl font-bold mt-8 mb-4" {...props} />,
-                h3: ({ node, ...props }) => <h3 className="text-accent text-xl font-bold mt-6 mb-3" {...props} />,
-                h4: ({ node, ...props }) => <h4 className="text-accent text-lg font-bold mt-6 mb-3" {...props} />,
-                h5: ({ node, ...props }) => <h5 className="text-accent text-base font-bold mt-4 mb-2" {...props} />,
-                h6: ({ node, ...props }) => <h6 className="text-accent text-sm font-bold mt-4 mb-2" {...props} />,
+                h1: ({ node, ...props }) => <h1 className="text-accent text-3xl font-bold mt-12 mb-6" {...props} />,
+                h2: ({ node, ...props }) => <h2 className="text-accent text-2xl font-bold mt-12 mb-4" {...props} />,
+                h3: ({ node, ...props }) => <h3 className="text-accent text-xl font-bold mt-10 mb-3" {...props} />,
+                h4: ({ node, ...props }) => <h4 className="text-accent text-lg font-bold mt-10 mb-3" {...props} />,
+                h5: ({ node, ...props }) => <h5 className="text-accent text-base font-bold mt-8 mb-2" {...props} />,
+                h6: ({ node, ...props }) => <h6 className="text-accent text-sm font-bold mt-8 mb-2" {...props} />,
                 a: ({ node, ...props }) => (
                     <a
                         className="text-accent hover:text-white no-underline transition-colors"
@@ -26,7 +26,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
                         {...props}
                     />
                 ),
-                p: ({ node, ...props }) => <p className="text-muted-foreground leading-relaxed mb-6 text-justify" {...props} />,
+                p: ({ node, ...props }) => <p className="text-muted-foreground leading-loose mb-8 text-justify" {...props} />,
                 ul: ({ node, ...props }) => <ul className="list-disc list-inside mb-6 text-muted-foreground" {...props} />,
                 ol: ({ node, ...props }) => <ol className="list-decimal list-inside mb-6 text-muted-foreground" {...props} />,
                 li: ({ node, ...props }) => <li className="mb-2" {...props} />,

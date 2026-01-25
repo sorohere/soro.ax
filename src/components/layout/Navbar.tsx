@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const navItems = [
     { name: "home", path: "/home" },
@@ -15,6 +15,9 @@ const navItems = [
 export function Navbar() {
     const pathname = usePathname();
     const isAdmin = pathname.startsWith("/admin");
+    const { scrollY } = useScroll();
+    const opacity = useTransform(scrollY, [0, 100], [1, 0.6]);
+    const scale = useTransform(scrollY, [0, 100], [1, 0.95]);
 
     if (isAdmin) return null;
 
@@ -23,7 +26,8 @@ export function Navbar() {
             <motion.nav
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className="pointer-events-auto bg-black/50 backdrop-blur-xl border border-white/10 rounded-full px-4 md:px-6 py-2 md:py-3 shadow-2xl flex items-center gap-3 md:gap-8"
+                style={{ opacity, scale }}
+                className="pointer-events-auto bg-black/50 backdrop-blur-xl border border-white/10 rounded-full px-4 md:px-6 py-2 md:py-3 shadow-2xl flex items-center gap-3 md:gap-8 transition-all duration-300 hover:!opacity-100 hover:!scale-100"
             >
                 {/* Logo */}
                 <Link href="/home" className="text-lg md:text-xl font-bold text-white hover:text-accent transition-colors tracking-tight">
