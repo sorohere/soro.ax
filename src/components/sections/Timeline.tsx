@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { MarkdownRenderer } from "@/components/markdown/MarkdownRenderer";
-import { X } from "lucide-react";
+import { X, Calendar, MapPin } from "lucide-react";
 
 export type TimelineEvent = {
     year: string;
-    date: string; // Added date
+    date: string;
     title: string;
     description: string;
     image?: string;
@@ -22,13 +22,12 @@ interface TimelineProps {
 
 export function Timeline({ events }: TimelineProps) {
     const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(() => {
-        // Default to the first pinned event, or null if none
-        return events.find(e => e.pinned) || null;
+        return events.find(e => e.pinned) || events[0] || null;
     });
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleEventClick = (event: TimelineEvent) => {
-        if (selectedEvent === event) {
+        if (selectedEvent === event && !isModalOpen) {
             setIsModalOpen(true);
         } else {
             setSelectedEvent(event);
@@ -46,105 +45,111 @@ export function Timeline({ events }: TimelineProps) {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [isModalOpen]);
 
+    // Group events by year
+    const eventsByYear = events.reduce((acc, event) => {
+        const year = event.year;
+        if (!acc[year]) acc[year] = [];
+        acc[year].push(event);
+        return acc;
+    }, {} as Record<string, TimelineEvent[]>);
+
+    const years = Object.keys(eventsByYear).sort((a, b) => parseInt(b) - parseInt(a));
+
     return (
         <>
-            <div className="flex flex-col md:flex-row gap-8 relative py-12">
-                {/* Timeline Line & Nodes */}
-                <div className="relative md:w-1/3">
-                    {/* Desktop Line - Gradient Fade */}
-                    <div className="hidden md:block absolute right-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+            <div className="max-w-5xl mx-auto px-6 py-12">
 
-                    {/* Mobile Line */}
-                    <div className="md:hidden absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-white/10 to-transparent ml-4" />
+                {/* Header */}
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mb-16"
+                >
+                    <h1 className="text-3xl font-bold text-white mb-2">
+                        Field <span className="text-accent">Notes</span>
+                    </h1>
+                    <p className="text-sm text-muted-foreground font-mono">
+                        Events, thoughts, and moments worth remembering.
+                    </p>
+                </motion.div>
 
-                    <div className="flex flex-col gap-12 py-4 max-h-[500px] md:max-h-none md:absolute md:inset-0 overflow-y-auto scrollbar-hide pl-12 md:pl-0 md:pr-16">
-                        {events.map((event, index) => (
-                            <div key={index} className="relative group">
-                                {/* Glowing Dot */}
-                                <div
-                                    className={cn(
-                                        "absolute -left-[51px] md:-right-[42px] md:left-auto top-1.5 w-5 h-5 rounded-full border-2 transition-all duration-300 cursor-pointer z-10",
-                                        selectedEvent === event
-                                            ? "bg-accent border-accent shadow-[0_0_15px_rgba(116,96,224,0.6)] scale-110"
-                                            : "bg-black border-white/20 group-hover:border-accent group-hover:bg-accent/20"
-                                    )}
-                                    onClick={() => handleEventClick(event)}
-                                />
-
-                                {/* Content */}
-                                <div
-                                    className="cursor-pointer group-hover:translate-x-1 transition-transform duration-300"
-                                    onClick={() => handleEventClick(event)}
-                                >
-                                    <span className={cn(
-                                        "font-mono text-xs md:text-sm mb-1 block transition-colors",
-                                        selectedEvent === event ? "text-accent" : "text-muted-foreground"
-                                    )}>
-                                        {new Date(event.date).toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" })}
-                                    </span>
-                                    <h3 className={cn(
-                                        "text-lg font-bold transition-colors leading-tight",
-                                        selectedEvent === event ? "text-white" : "text-muted-foreground group-hover:text-white"
-                                    )}>
-                                        {event.title}
-                                    </h3>
-                                </div>
+                {/* Timeline by Year */}
+                <div className="space-y-16">
+                    {years.map((year, yearIndex) => (
+                        <motion.div
+                            key={year}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: yearIndex * 0.1 }}
+                            className="relative"
+                        >
+                            {/* Year Label */}
+                            <div className="flex items-center gap-4 mb-8">
+                                <h2 className="text-2xl font-bold text-white/90 font-mono">{year}</h2>
+                                <div className="h-px flex-1 bg-white/5" />
                             </div>
-                        ))}
-                    </div>
-                </div>
 
-                {/* Detail View (Preview) */}
-                <div className="flex-1 min-h-[400px]">
-                    <AnimatePresence mode="wait">
-                        {selectedEvent ? (
-                            <motion.div
-                                key={selectedEvent.year}
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -20 }}
-                                transition={{ duration: 0.3 }}
-                                className="glass-panel p-8 rounded-2xl h-full flex flex-col"
-                            >
-                                {selectedEvent.image && (
-                                    <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-white/10 mb-6 group cursor-pointer" onClick={() => setIsModalOpen(true)}>
-                                        <Image
-                                            src={selectedEvent.image}
-                                            alt={selectedEvent.title}
-                                            fill
-                                            className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                        />
-                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <span className="text-white text-sm font-bold uppercase tracking-widest">Expand</span>
+                            {/* Events Grid */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {eventsByYear[year].map((event, eventIndex) => (
+                                    <motion.div
+                                        key={event.date + event.title}
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ delay: yearIndex * 0.1 + eventIndex * 0.05 }}
+                                        onClick={() => handleEventClick(event)}
+                                        className={cn(
+                                            "glass-panel rounded-xl overflow-hidden cursor-pointer transition-all duration-300 group relative",
+                                            selectedEvent === event
+                                                ? "ring-2 ring-accent/50 shadow-lg shadow-accent/20"
+                                                : "hover:ring-1 hover:ring-white/20"
+                                        )}
+                                    >
+                                        {/* Image or Colored Block */}
+                                        {event.image ? (
+                                            <div className="relative aspect-[4/3] w-full overflow-hidden bg-black/20">
+                                                <Image
+                                                    src={event.image}
+                                                    alt={event.title}
+                                                    fill
+                                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                                            </div>
+                                        ) : (
+                                            <div className="aspect-[4/3] w-full bg-gradient-to-br from-accent/10 to-blue-500/5 flex items-center justify-center">
+                                                <Calendar className="w-12 h-12 text-white/10" />
+                                            </div>
+                                        )}
+
+                                        {/* Content */}
+                                        <div className="p-5">
+                                            <div className="text-[10px] uppercase tracking-wider text-accent/80 font-mono mb-2">
+                                                {new Date(event.date).toLocaleDateString("en-US", {
+                                                    month: "short",
+                                                    day: "numeric",
+                                                    timeZone: "UTC"
+                                                })}
+                                            </div>
+                                            <h3 className="text-base font-bold text-white mb-2 leading-tight line-clamp-2">
+                                                {event.title}
+                                            </h3>
+                                            <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
+                                                {event.description.replace(/[#*_`]/g, '').substring(0, 120)}...
+                                            </p>
                                         </div>
-                                    </div>
-                                )}
-                                <div className="flex-1">
-                                    <div className="flex items-baseline justify-between mb-2">
-                                        <h2 className="text-2xl font-bold text-white tracking-tight">{selectedEvent.title}</h2>
-                                        <span className="font-mono text-accent text-sm">
-                                            {new Date(selectedEvent.date).getFullYear()}
-                                        </span>
-                                    </div>
 
-                                    <p className="text-muted-foreground leading-relaxed font-mono line-clamp-6 text-sm md:text-base">
-                                        {selectedEvent.description}
-                                    </p>
-                                </div>
-
-                                <button
-                                    onClick={() => setIsModalOpen(true)}
-                                    className="mt-6 w-full py-3 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-sm font-bold text-white transition-all uppercase tracking-wider"
-                                >
-                                    Read Full Log
-                                </button>
-                            </motion.div>
-                        ) : (
-                            <div className="h-full glass-panel rounded-2xl flex items-center justify-center text-muted-foreground/50 italic font-mono p-8 text-center border-dashed">
-                                Select a node from the timeline to decrypt details...
+                                        {/* Pinned Badge */}
+                                        {event.pinned && (
+                                            <div className="absolute top-3 right-3 px-2 py-1 bg-accent/90 rounded text-[9px] font-bold text-white uppercase tracking-wider">
+                                                Pinned
+                                            </div>
+                                        )}
+                                    </motion.div>
+                                ))}
                             </div>
-                        )}
-                    </AnimatePresence>
+                        </motion.div>
+                    ))}
                 </div>
             </div>
 
@@ -157,26 +162,26 @@ export function Timeline({ events }: TimelineProps) {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setIsModalOpen(false)}
-                            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                            className="absolute inset-0 bg-black/90 backdrop-blur-sm"
                         />
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                            className="relative w-full max-w-4xl max-h-[90vh] bg-black border border-white/10 rounded-xl overflow-hidden shadow-2xl"
+                            className="relative w-full max-w-4xl max-h-[90vh] bg-black border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
                         >
-                            {/* Close Button - Fixed */}
+                            {/* Close Button */}
                             <button
                                 onClick={() => setIsModalOpen(false)}
-                                className="absolute top-4 right-4 z-50 p-2 bg-black/50 hover:bg-white/20 rounded-full text-white transition-colors backdrop-blur-md"
+                                className="absolute top-4 right-4 z-50 p-2 bg-black/80 hover:bg-white/20 rounded-full text-white transition-colors backdrop-blur-md border border-white/10"
                             >
                                 <X size={20} />
                             </button>
 
                             {/* Scrollable Container */}
                             <div className="overflow-y-auto max-h-[90vh] custom-scrollbar">
-                                {/* Header / Image */}
-                                <div className="relative h-48 md:h-64 w-full">
+                                {/* Header */}
+                                <div className="relative h-64 md:h-80 w-full">
                                     {selectedEvent.image ? (
                                         <Image
                                             src={selectedEvent.image}
@@ -185,23 +190,33 @@ export function Timeline({ events }: TimelineProps) {
                                             className="object-cover"
                                         />
                                     ) : (
-                                        <div className="w-full h-full bg-accent/10 flex items-center justify-center">
-                                            <span className="text-accent text-4xl font-bold">{selectedEvent.year}</span>
+                                        <div className="w-full h-full bg-gradient-to-br from-accent/20 to-blue-500/10 flex items-center justify-center">
+                                            <Calendar className="w-24 h-24 text-white/10" />
                                         </div>
                                     )}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
 
-                                    <div className="absolute bottom-6 left-6 md:left-8 right-6">
-                                        <span className="text-accent font-mono mb-2 block">
-                                            {new Date(selectedEvent.date).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" })}
-                                        </span>
-                                        <h2 className="text-2xl md:text-4xl font-bold text-white">{selectedEvent.title}</h2>
+                                    <div className="absolute bottom-8 left-8 right-8">
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <div className="flex items-center gap-2 text-accent font-mono text-sm">
+                                                <Calendar className="w-4 h-4" />
+                                                {new Date(selectedEvent.date).toLocaleDateString("en-US", {
+                                                    month: "long",
+                                                    day: "numeric",
+                                                    year: "numeric",
+                                                    timeZone: "UTC"
+                                                })}
+                                            </div>
+                                        </div>
+                                        <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+                                            {selectedEvent.title}
+                                        </h2>
                                     </div>
                                 </div>
 
                                 {/* Content */}
-                                <div className="p-6 md:p-8">
-                                    <div className="prose prose-invert max-w-none font-mono">
+                                <div className="p-8 md:p-12">
+                                    <div className="prose prose-invert prose-lg max-w-none">
                                         <MarkdownRenderer content={selectedEvent.description} />
                                     </div>
                                 </div>
