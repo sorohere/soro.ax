@@ -14,9 +14,11 @@ interface MemoryNodeProps {
     index: number;
     totalNodes: number;
     onClick: (event: TimelineEvent) => void;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
 }
 
-export function MemoryNode({ event, x, y, rotation, index, totalNodes, onClick }: MemoryNodeProps) {
+export function MemoryNode({ event, x, y, rotation, index, totalNodes, onClick, onMouseEnter, onMouseLeave }: MemoryNodeProps) {
     // Determine variant based on content
     const isPolaroid = !!event.image;
 
@@ -26,21 +28,29 @@ export function MemoryNode({ event, x, y, rotation, index, totalNodes, onClick }
     return (
         <motion.div
             className="absolute cursor-pointer group"
-            style={{
+            style={{ zIndex: baseZIndex }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{
                 left: x,
                 top: y,
                 rotate: rotation,
-                zIndex: baseZIndex, // Default stacking order
+                opacity: 1,
+                scale: 1
             }}
-            whileHover={{ scale: 1.1, rotate: rotation, zIndex: totalNodes + 10 }} // Always pop to top on hover
+            whileHover={{ scale: 1.15, zIndex: 100 }}
             whileTap={{ scale: 0.95 }}
+            transition={{
+                type: "spring",
+                stiffness: 200,
+                damping: 20,
+                mass: 1
+            }}
             onClick={(e) => {
-                e.stopPropagation(); // Prevent drag kickoff if possible (framer handles this usually)
+                e.stopPropagation();
                 onClick(event);
             }}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
         >
             {isPolaroid ? (
                 // Polaroid Style -> "Lab Evidence" Style

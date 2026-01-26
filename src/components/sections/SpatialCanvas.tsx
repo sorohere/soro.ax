@@ -26,12 +26,42 @@ export function SpatialCanvas({ events }: SpatialCanvasProps) {
     }, [events]);
 
     const [activeYear, setActiveYear] = useState<string>(years[0] || new Date().getFullYear().toString());
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
     // 2. Filter & Layout for Active Year
     const activeNodes = useMemo(() => {
         const filtered = events.filter(e => e.year === activeYear);
         return generateSpatialLayout(filtered);
     }, [events, activeYear]);
+
+    // 3. Dynamic Repulsion Layout
+    const displayedNodes = useMemo(() => {
+        if (hoveredIndex === null) return activeNodes;
+
+        const hoveredNode = activeNodes[hoveredIndex];
+        const repulsionRadius = 400; // Interaction range
+        const repulsionStrength = 180; // How far to push
+
+        return activeNodes.map((node, i) => {
+            if (i === hoveredIndex) return node; // Hovered node stays
+
+            const dx = node.x - hoveredNode.x;
+            const dy = node.y - hoveredNode.y;
+            const dist = Math.sqrt(dx * dx + dy * dy) || 1; // Avoid div by zero
+
+            if (dist < repulsionRadius) {
+                const force = (repulsionRadius - dist) / repulsionRadius;
+                const smoothForce = Math.pow(force, 2); // Easing for smoother falloff
+
+                return {
+                    ...node,
+                    x: node.x + (dx / dist) * repulsionStrength * smoothForce,
+                    y: node.y + (dy / dist) * repulsionStrength * smoothForce,
+                };
+            }
+            return node;
+        });
+    }, [activeNodes, hoveredIndex]);
 
     // Reset view when switching years
     useEffect(() => {
@@ -95,7 +125,7 @@ export function SpatialCanvas({ events }: SpatialCanvasProps) {
 
                         {/* Nodes */}
                         <div className="absolute left-[50%] top-[50%]">
-                            {activeNodes.map((node, i) => (
+                            {displayedNodes.map((node, i) => (
                                 <MemoryNode
                                     key={node.slug}
                                     event={node}
@@ -105,6 +135,8 @@ export function SpatialCanvas({ events }: SpatialCanvasProps) {
                                     index={i}
                                     totalNodes={activeNodes.length}
                                     onClick={setSelectedEvent}
+                                    onMouseEnter={() => setHoveredIndex(i)}
+                                    onMouseLeave={() => setHoveredIndex(null)}
                                 />
                             ))}
                         </div>
