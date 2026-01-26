@@ -2,7 +2,7 @@ import { getAllPosts } from "@/lib/posts";
 import { TerminalPostList } from "@/components/blog/TerminalPostList";
 
 export const metadata = {
-    title: "System Logs | soro.ax",
+    title: "soro | blog",
     description: "Thoughts and logs from the system.",
 };
 

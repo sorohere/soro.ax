@@ -2,11 +2,29 @@ import { notFound } from "next/navigation";
 import { getPostBySlug, getPostSlugs } from "@/lib/posts";
 import { MarkdownRenderer } from "@/components/markdown/MarkdownRenderer";
 
+// ... (imports)
+
 export async function generateStaticParams() {
     const posts = getPostSlugs();
     return posts.map((slug) => ({
         slug: slug.replace(/\.md$/, ""),
     }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const post = getPostBySlug(slug);
+
+    if (!post) {
+        return {
+            title: "Not Found | soro | blog",
+        };
+    }
+
+    return {
+        title: "soro | blog",
+        description: post.excerpt || `Read ${post.title} on soro.ax`,
+    };
 }
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
