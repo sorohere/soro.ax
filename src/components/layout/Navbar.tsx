@@ -7,7 +7,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 
 const navItems = [
     { name: "home", path: "/home" },
-    { name: "post", path: "/blog" },
+    { name: "blog", path: "/blog" },
     { name: "about", path: "/about" },
     { name: "me", path: "/me" },
 ];
