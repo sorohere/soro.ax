@@ -11,7 +11,7 @@ export function Footer() {
 
     return (
         <footer className="w-full bg-black mt-auto">
-            <div className="max-w-4xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="max-w-4xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-6">
 
                 {/* Left: Copyright */}
                 <div className="flex flex-col gap-1 text-center md:text-left">

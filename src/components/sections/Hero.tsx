@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export function Hero() {
     return (
-        <section className="relative pt-8 pb-3 flex flex-col justify-center items-center overflow-hidden aurora-bg">
+        <section className="relative pt-10 pb-3 flex flex-col justify-center items-center overflow-hidden aurora-bg">
             <div className="w-full max-w-4xl px-6 z-10 text-center">
                 {/* Glitch Effect Name */}
                 <motion.div
