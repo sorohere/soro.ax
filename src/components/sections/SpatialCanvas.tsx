@@ -82,7 +82,7 @@ export function SpatialCanvas({ events }: SpatialCanvasProps) {
             {/* Header */}
             <div className="absolute top-32 left-0 right-0 z-50 pointer-events-none flex flex-col items-center text-center">
                 <h1 className="text-3xl font-bold tracking-tight text-white drop-shadow-2xl">
-                    mind<span className="text-accent">_palace</span>
+                    open<span className="text-accent">_sky</span>
                 </h1>
                 <p className="text-xs text-muted-foreground/60 mt-1 font-mono tracking-wider drop-shadow-md">
                     {activeYear} Collection
