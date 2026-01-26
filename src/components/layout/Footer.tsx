@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Twitter, Mail, ExternalLink } from "lucide-react";
+import { Github, Twitter, Linkedin, Mail, ExternalLink } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export function Footer() {
@@ -26,22 +26,14 @@ export function Footer() {
                 {/* Right: Socials */}
                 <div className="flex items-center gap-6">
                     <a
-                        href="https://github.com/sorohere"
+                        href="https://linkedin.com/in/sorohere"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-white transition-colors flex items-center gap-2 group"
+                        className="text-muted-foreground hover:text-[#0077B5] transition-colors flex items-center gap-2 group"
                     >
-                        <Github size={18} />
-                        <span className="sr-only">GitHub</span>
-                    </a>
-                    <a
-                        href="https://twitter.com/sorohere"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-[#1DA1F2] transition-colors flex items-center gap-2 group"
-                    >
-                        <Twitter size={18} />
-                        <span className="sr-only">Twitter</span>
+                        <Twitter size={18} className="hidden" /> {/* Using Linkedin icon from lucide-react, need to import it first or replace Twitter with Linkedin if available in imports */}
+                        <Linkedin size={18} />
+                        <span className="sr-only">LinkedIn</span>
                     </a>
                     <a
                         href="mailto:saurabh.kushwaha.dev@gmail.com"

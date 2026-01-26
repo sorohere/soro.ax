@@ -29,14 +29,14 @@ const cards = [
         )
     },
     {
-        id: "linkedin",
+        id: "twitter",
         colSpan: "col-span-1",
-        href: "https://linkedin.com/in/sorohere",
+        href: "https://x.com/sorohere",
         content: (
-            <div className="h-full flex flex-col items-center justify-center p-6 group hover:bg-[#0077B5]/10 transition-colors relative">
+            <div className="h-full flex flex-col items-center justify-center p-6 group hover:bg-[#1DA1F2]/10 transition-colors relative">
                 <div className="absolute top-4 left-4 text-[10px] text-white/20 font-mono tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity">Connect</div>
-                <Linkedin className="w-8 h-8 text-muted-foreground group-hover:text-[#0077B5] transition-colors mb-2" />
-                <span className="text-sm font-medium text-white">LinkedIn</span>
+                <Twitter className="w-8 h-8 text-muted-foreground group-hover:text-[#1DA1F2] transition-colors mb-2" />
+                <span className="text-sm font-medium text-white">Twitter</span>
             </div>
         )
     },
