@@ -13,9 +13,9 @@ export function Hero() {
                     transition={{ duration: 0.8 }}
                     className="relative inline-block -mb-2 md:-mb-6"
                 >
-                    <h1 className="text-5xl md:text-9xl font-black tracking-tighter text-white leading-[0.8]">
+                    <h1 className="text-5xl md:text-9xl font-black tracking-tighter leading-[0.8] text-accent">
                         soro
-                        <span className="text-white/50">here</span>
+                        <span className="text-white">here</span>
                     </h1>
                 </motion.div>
 
