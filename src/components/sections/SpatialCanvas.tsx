@@ -46,11 +46,12 @@ export function SpatialCanvas({ events }: SpatialCanvasProps) {
         <div className="relative w-full h-full overflow-hidden bg-[#050505] cursor-grab active:cursor-grabbing selection:bg-transparent flex flex-col">
 
             {/* Header */}
-            <div className="absolute top-24 md:top-28 left-0 right-0 z-50 pointer-events-none flex flex-col items-center text-center">
-                <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-white/90">
+            {/* Header */}
+            <div className="absolute top-10 left-0 right-0 z-50 pointer-events-none flex flex-col items-center text-center">
+                <h1 className="text-3xl font-bold tracking-tight text-white">
                     mind<span className="text-accent">_palace</span>
                 </h1>
-                <p className="font-mono text-sm text-muted-foreground mt-2 max-w-md">
+                <p className="text-xs text-muted-foreground/60 mt-1 font-mono tracking-wider">
                     {activeYear} Collection
                 </p>
             </div>
@@ -111,7 +112,6 @@ export function SpatialCanvas({ events }: SpatialCanvasProps) {
             {/* Year Switcher Dock */}
             <div className="absolute bottom-0 left-0 right-0 z-50 p-6 flex justify-center pointer-events-none">
                 <div className="pointer-events-auto flex items-center gap-2 px-4 py-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-full shadow-2xl">
-                    <span className="text-[10px] text-white/30 font-mono uppercase mr-2 tracking-widest hidden md:inline">Timestamp_Select //</span>
                     <div className="flex gap-1">
                         {years.map(year => (
                             <button

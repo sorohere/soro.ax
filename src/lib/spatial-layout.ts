@@ -8,60 +8,35 @@ export type SpatialNode = TimelineEvent & {
 
 export function generateSpatialLayout(events: TimelineEvent[]): SpatialNode[] {
     const nodes: SpatialNode[] = [];
+    const centerX = 0;
+    const centerY = 0;
 
-    // 1. Group events by Year
-    const eventsByYear: Record<string, TimelineEvent[]> = {};
-    events.forEach(event => {
-        const year = event.year.toString();
-        if (!eventsByYear[year]) eventsByYear[year] = [];
-        eventsByYear[year].push(event);
-    });
+    // Dynamic spread based on count to prevent overcrowding
+    const baseSpread = 300;
+    const spreadFactor = Math.min(events.length * 15, 300); // Grow spread with more items, capped
+    const maxSpread = baseSpread + spreadFactor;
 
-    // 2. Sort years descending (Newest center)
-    const sortedYears = Object.keys(eventsByYear).sort((a, b) => Number(b) - Number(a));
+    events.forEach((event, i) => {
+        // Organic "Pile" Scatter
+        // Use semi-Gaussian distribution for natural piling (more in center, fewer at edges)
 
-    // 3. Layout Configuration
-    const clusterGap = 800; // Distance between year centers
-    const packingDensity = 120; // How tight items are within a year (smaller = overlaps)
+        const angle = Math.random() * Math.PI * 2;
+        // Biased random for radius: heavily biased towards center but with long tail
+        const rRandom = Math.pow(Math.random(), 0.8); // 0.8 makes it slightly spread out from pure center
+        const radius = rRandom * maxSpread;
 
-    sortedYears.forEach((year, index) => {
-        const yearEvents = eventsByYear[year];
+        const x = centerX + Math.cos(angle) * radius;
+        const y = centerY + Math.sin(angle) * radius;
 
-        // Define Center for this Year's Cluster (Spiral Layout)
-        // Using a spiral ensures distinctive "zones" that don't drift linearly
-        // Index 0 (Newest) is at (0,0) due to radius 0 logic interaction or just handle explicitly
-        // Let's use Fermat's spiral or similar: r = c * sqrt(theta)
-        // But for distinct clusters, simple increment is fine.
+        // Random rotation (messy pile)
+        // Reference image shows some heavy tilts
+        const rotation = (Math.random() - 0.5) * 60; // -30 to 30 degrees
 
-        let clusterX = 0;
-        let clusterY = 0;
-
-        if (index > 0) {
-            const angle = index * 2.4; // ~137.5 degrees (Golden Angle) * factor to spread nicely
-            const radius = 600 * Math.sqrt(index); // Sqrt keeps density uniform-ish
-            clusterX = Math.cos(angle) * radius;
-            clusterY = Math.sin(angle) * radius;
-        }
-
-        // Scatter events AROUND this year's center
-        yearEvents.forEach((event, i) => {
-            // Tighter pack for same year - "Pile" aesthetic
-            // Increase density range to prevent full overlap
-            const offsetRadius = (Math.random() * 180) + (Math.random() * 100 * (i % 4));
-            const offsetAngle = Math.random() * Math.PI * 2;
-
-            const x = clusterX + (Math.cos(offsetAngle) * offsetRadius);
-            const y = clusterY + (Math.sin(offsetAngle) * offsetRadius);
-
-            // Random rotation (messy pile)
-            const rotation = (Math.random() - 0.5) * 45;
-
-            nodes.push({
-                ...event,
-                x,
-                y,
-                rotation
-            });
+        nodes.push({
+            ...event,
+            x,
+            y,
+            rotation
         });
     });
 
