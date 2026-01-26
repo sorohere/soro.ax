@@ -30,6 +30,13 @@ export function MemoryNode({ event, x, y, rotation, index, totalNodes, onClick, 
             className="absolute cursor-pointer group"
             style={{ zIndex: baseZIndex }}
             initial={{ opacity: 0, scale: 0.8 }}
+            animations={{
+                opacity: 1,
+                scale: 1,
+                left: x,
+                top: y,
+                rotate: rotation
+            }}
             animate={{
                 left: x,
                 top: y,
@@ -39,18 +46,23 @@ export function MemoryNode({ event, x, y, rotation, index, totalNodes, onClick, 
             }}
             whileHover={{ scale: 1.15, zIndex: 100 }}
             whileTap={{ scale: 0.95 }}
+            drag
+            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+            dragElastic={0.2}
+            dragTransition={{ bounceStiffness: 500, bounceDamping: 15 }}
+            whileDrag={{ scale: 1.1, cursor: "grabbing", zIndex: 100 }}
             transition={{
                 type: "spring",
-                stiffness: 200,
-                damping: 20,
-                mass: 1
+                stiffness: 260,
+                damping: 20
             }}
             onClick={(e) => {
-                e.stopPropagation();
+                e.preventDefault();
                 onClick(event);
             }}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            onPointerDown={(e) => e.stopPropagation()} // Stop canvas drag start
         >
             {isPolaroid ? (
                 // Polaroid Style -> "Lab Evidence" Style
