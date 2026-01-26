@@ -104,7 +104,7 @@ const cards = [
 
 export function BentoGrid() {
     return (
-        <section className="pt-0 pb-20 max-w-4xl mx-auto px-6 space-y-4">
+        <section className="pt-0 pb-4 max-w-4xl mx-auto px-6 space-y-4">
             {/* Main Grid */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[180px]">
                 {cards.map((card, i) => (
