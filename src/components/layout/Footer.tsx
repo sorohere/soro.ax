@@ -10,7 +10,7 @@ export function Footer() {
     if (isAdmin) return null;
 
     return (
-        <footer className="w-full bg-black mt-auto">
+        <footer className="w-full bg-black/40 backdrop-blur-md mt-auto relative z-50 border-t border-white/5">
             <div className="max-w-4xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-6">
 
                 {/* Left: Copyright */}

@@ -46,18 +46,21 @@ export function SpatialCanvas({ events }: SpatialCanvasProps) {
         <div className="relative w-full h-full overflow-hidden bg-[#050505] cursor-grab active:cursor-grabbing selection:bg-transparent flex flex-col">
 
             {/* Header */}
+            {/* Top Gradient Mask */}
+            <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black via-black/80 to-transparent z-40 pointer-events-none" />
+
             {/* Header */}
-            <div className="absolute top-10 left-0 right-0 z-50 pointer-events-none flex flex-col items-center text-center">
-                <h1 className="text-3xl font-bold tracking-tight text-white">
+            <div className="absolute top-32 left-0 right-0 z-50 pointer-events-none flex flex-col items-center text-center">
+                <h1 className="text-3xl font-bold tracking-tight text-white drop-shadow-2xl">
                     mind<span className="text-accent">_palace</span>
                 </h1>
-                <p className="text-xs text-muted-foreground/60 mt-1 font-mono tracking-wider">
+                <p className="text-xs text-muted-foreground/60 mt-1 font-mono tracking-wider drop-shadow-md">
                     {activeYear} Collection
                 </p>
             </div>
 
             {/* Zoom Controls */}
-            <div className="absolute bottom-24 right-8 z-50 flex flex-col gap-2 pointer-events-auto">
+            <div className="absolute bottom-32 right-8 z-50 flex flex-col gap-2 pointer-events-auto">
                 <button
                     onClick={() => handleZoom(0.2)}
                     className="p-3 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-colors"
@@ -109,8 +112,11 @@ export function SpatialCanvas({ events }: SpatialCanvasProps) {
                 </AnimatePresence>
             </div>
 
+            {/* Bottom Gradient Mask */}
+            <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black via-black/80 to-transparent z-40 pointer-events-none" />
+
             {/* Year Switcher Dock */}
-            <div className="absolute bottom-0 left-0 right-0 z-50 p-6 flex justify-center pointer-events-none">
+            <div className="absolute bottom-20 left-0 right-0 z-50 p-6 flex justify-center pointer-events-none">
                 <div className="pointer-events-auto flex items-center gap-2 px-4 py-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-full shadow-2xl">
                     <div className="flex gap-1">
                         {years.map(year => (

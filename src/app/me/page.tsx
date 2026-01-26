@@ -5,7 +5,7 @@ export default function MePage() {
     const events = getAllTimelineEvents();
 
     return (
-        <div className="w-full h-[calc(100vh-220px)] overflow-hidden bg-[#050505] rounded-2xl border border-white/5 mx-auto max-w-[98%]">
+        <div className="fixed inset-0 z-0 bg-[#050505]">
             <SpatialCanvas events={events} />
         </div>
     );
